@@ -85,7 +85,11 @@ class PembelianObatPage extends StatelessWidget {
                       onPressed: () {
                         // Sementara belum masuk form pembelian
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Beli ${obat['nama']}")),
+                          SnackBar(
+                            content: Text(
+                              "Membeli ${obat['nama']} - akan masuk form pembelian",
+                            ),
+                          ),
                         );
                       },
                       style: ElevatedButton.styleFrom(

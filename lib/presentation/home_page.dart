@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projectuts/presentation/login_page.dart';
+import 'package:projectuts/presentation/pembelian_obat_page.dart';
 import 'package:projectuts/presentation/register_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -50,10 +51,10 @@ class HomePage extends StatelessWidget {
                   title: "Beli Obat",
                   color: greenPastel,
                   onTap: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => RegisterPage(), // sementara
+                        builder: (context) => PembelianObatPage(),
                       ),
                     );
                   },
@@ -86,9 +87,7 @@ class HomePage extends StatelessWidget {
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => RegisterPage(), // sementara
-                      ),
+                      MaterialPageRoute(builder: (context) => RegisterPage()),
                     );
                   },
                 ),
@@ -97,7 +96,7 @@ class HomePage extends StatelessWidget {
                   title: "Logout",
                   color: Colors.redAccent,
                   onTap: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(builder: (_) => const LoginPage()),
                     );
