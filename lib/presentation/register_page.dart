@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projectuts/presentation/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -34,7 +35,7 @@ class _RegisterPageState extends State<RegisterPage> {
               children: [
                 SizedBox(height: 10),
                 Text(
-                  "Selamat Datang di MediKlik!",
+                  "Selamat Datang di Aplikasi MediKlik!",
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -296,9 +297,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => RegisterPage(),
-                          ),
+                          MaterialPageRoute(builder: (context) => LoginPage()),
                         );
                       },
                       child: Text(
