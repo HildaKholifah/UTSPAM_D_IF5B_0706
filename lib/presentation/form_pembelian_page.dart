@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FormPembelianPage extends StatefulWidget {
   final String nama;
@@ -26,6 +29,7 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
 
   String? metodePembelian = "langsung"; // default
   int totalHarga = 0;
+  File? fotoResep;
 
   @override
   void initState() {
@@ -40,6 +44,52 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
     });
   }
 
+  Future<void> _pilihGambar(bool dariKamera) async {
+    final picker = ImagePicker();
+    XFile? file = await picker.pickImage(
+      source: dariKamera ? ImageSource.camera : ImageSource.gallery,
+      imageQuality: 70,
+    );
+
+    if (file != null) {
+      setState(() => fotoResep = File(file.path));
+    }
+  }
+
+  void _validasiDanSimpan() {
+    if (!_formKey.currentState!.validate()) return;
+
+    if (metodePembelian == "resep" && fotoResep == null) {
+      _showAlert(
+        "Foto resep wajib diunggah untuk pembelian dengan resep dokter!",
+      );
+      return;
+    }
+
+    // TODO: Simpan ke SQLite di sini nanti
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Pembelian berhasil disimpan!")),
+    );
+
+    Navigator.pushReplacementNamed(context, "/riwayat");
+  }
+
+  void _showAlert(String pesan) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text("Validasi"),
+        content: Text(pesan),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,9 +99,9 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
         centerTitle: true,
       ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
           child: Form(
             key: _formKey,
             child: Column(
@@ -171,6 +221,37 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
                           border: OutlineInputBorder(),
                         ),
                       ),
+
+                      const SizedBox(height: 10),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          OutlinedButton.icon(
+                            onPressed: () => _pilihGambar(true),
+                            icon: const Icon(Icons.camera_alt),
+                            label: const Text("Kamera"),
+                          ),
+                          OutlinedButton.icon(
+                            onPressed: () => _pilihGambar(false),
+                            icon: const Icon(Icons.image),
+                            label: const Text("Galeri"),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      if (fotoResep != null)
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.file(
+                            fotoResep!,
+                            height: 120,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                     ],
                   ),
 
@@ -190,24 +271,12 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Pembelian berhasil disimpan!"),
-                          ),
-                        );
-                        Navigator.pop(context);
-                      }
-                    },
+                    onPressed: _validasiDanSimpan,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.teal,
                       foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
                     ),
-                    child: const Text("Simpan"),
+                    child: const Text("Konfirmasi Pembelian"),
                   ),
                 ),
               ],
