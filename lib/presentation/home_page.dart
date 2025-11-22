@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget {
 
             // MENU 4 FITUR UTAMA
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _menuButton(
                   icon: Icons.shopping_cart,
@@ -77,7 +77,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 12),
 
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _menuButton(
                   icon: Icons.person,
@@ -189,8 +189,15 @@ class HomePage extends StatelessWidget {
       elevation: 2,
       child: ListTile(
         leading: const Icon(Icons.medical_services, color: Colors.teal),
-        title: Text(nama),
-        subtitle: Text(kategori),
+        title: Text(nama, style: TextStyle(fontWeight: FontWeight.bold)),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(kategori),
+            Text(harga, style: TextStyle(fontWeight: FontWeight.bold)),
+          ],
+        ),
         trailing: ElevatedButton(
           onPressed: onTap,
           style: ElevatedButton.styleFrom(
@@ -203,4 +210,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
