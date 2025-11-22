@@ -26,6 +26,8 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               SizedBox(height: 50),
 
+              Image.asset('assets/presentation/Logo MediKlik.png', width: 240),
+
               SizedBox(height: 20),
 
               Text(
