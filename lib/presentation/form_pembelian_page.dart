@@ -72,10 +72,12 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
       "nama": widget.nama,
       "kategori": widget.kategori,
       "harga": widget.harga,
+      "namaPembeli": _namaPembeliCtr.text,
       "jumlah": int.parse(_jumlahCtr.text),
       "total": totalHarga,
       "metode": metodePembelian == "resep" ? "Resep Dokter" : "Langsung",
       "nomorResep": metodePembelian == "resep" ? _nomorResepCtr.text : "-",
+      "fotoResep": fotoResep,
       "tanggal": DateTime.now().toString().substring(0, 10),
     };
 

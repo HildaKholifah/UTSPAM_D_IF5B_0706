@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:projectuts/presentation/detail_pembelian_page.dart';
+import 'package:projectuts/presentation/form_pembelian_page.dart';
 import 'package:projectuts/presentation/home_page.dart';
 
 class RiwayatPembelianPage extends StatelessWidget {
@@ -116,6 +118,36 @@ class RiwayatPembelianPage extends StatelessWidget {
                   fontSize: 15,
                 ),
               ),
+
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => DetailPembelianPage(
+                      transaksi: data,
+                      onDelete: () {
+                        // hapus dari list
+                        dummyRiwayat.removeAt(index);
+                        Navigator.pop(context);
+                      },
+                      onEdit: () {
+                        // buka halaman edit transaksi
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => FormPembelianPage(
+                              nama: data['nama'],
+                              kategori: data['kategori'],
+                              harga:
+                                  data['total'], // total bisa dipakai sebagai harga sementara
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                );
+              },
             ),
           );
         },
