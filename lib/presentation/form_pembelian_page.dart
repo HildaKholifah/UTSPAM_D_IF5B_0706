@@ -1,0 +1,220 @@
+import 'package:flutter/material.dart';
+
+class FormPembelianPage extends StatefulWidget {
+  final String nama;
+  final String kategori;
+  final int harga;
+
+  const FormPembelianPage({
+    super.key,
+    required this.nama,
+    required this.kategori,
+    required this.harga,
+  });
+
+  @override
+  State<FormPembelianPage> createState() => _FormPembelianPageState();
+}
+
+class _FormPembelianPageState extends State<FormPembelianPage> {
+  final _formKey = GlobalKey<FormState>();
+
+  final _namaPembeliCtr = TextEditingController();
+  final _jumlahCtr = TextEditingController();
+  final _catatanCtr = TextEditingController();
+  final _nomorResepCtr = TextEditingController();
+
+  String? metodePembelian = "langsung"; // default
+  int totalHarga = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _jumlahCtr.addListener(_hitungTotal);
+  }
+
+  void _hitungTotal() {
+    int qty = int.tryParse(_jumlahCtr.text) ?? 0;
+    setState(() {
+      totalHarga = widget.harga * qty;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF3DB4DF),
+        title: Text("Pembelian Obat - ${widget.nama}"),
+        centerTitle: true,
+      ),
+
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Nama Obat: ${widget.nama}",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                Text(
+                  "Kategori: ${widget.kategori}",
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+
+                Text(
+                  "Harga: Rp ${widget.harga}",
+                  style: const TextStyle(fontSize: 14, color: Colors.black87),
+                ),
+
+                const SizedBox(height: 20),
+
+                TextFormField(
+                  controller: _namaPembeliCtr,
+                  validator: (v) => v!.isEmpty ? "Nama wajib diisi" : null,
+                  decoration: const InputDecoration(
+                    label: Text("Nama Pembeli"),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                TextFormField(
+                  controller: _jumlahCtr,
+                  validator: (v) {
+                    if (v!.isEmpty) return "Jumlah wajib diisi";
+                    if (int.tryParse(v) == null || int.parse(v) <= 0) {
+                      return "Jumlah harus angka positif";
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    label: Text("Jumlah Pembelian"),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                TextFormField(
+                  controller: _catatanCtr,
+                  decoration: const InputDecoration(
+                    label: Text("Catatan (Opsional)"),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+                const Text(
+                  "Metode Pembelian",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: RadioListTile(
+                        title: const Text("Langsung"),
+                        value: "langsung",
+                        groupValue: metodePembelian,
+                        onChanged: (val) {
+                          setState(() => metodePembelian = val);
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: RadioListTile(
+                        title: const Text("Resep Dokter"),
+                        value: "resep",
+                        groupValue: metodePembelian,
+                        onChanged: (val) {
+                          setState(() => metodePembelian = val);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+
+                if (metodePembelian == "resep")
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        controller: _nomorResepCtr,
+                        validator: (v) {
+                          if (metodePembelian == "resep") {
+                            if (v!.isEmpty) return "Nomor resep wajib diisi";
+                            if (v.length < 6) {
+                              return "Nomor resep minimal 6 karakter";
+                            }
+                            if (!RegExp(
+                              r'^(?=.*[A-Za-z])(?=.*\d)',
+                            ).hasMatch(v)) {
+                              return "Harus kombinasi huruf & angka";
+                            }
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          label: Text("Nomor Resep Dokter"),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                const SizedBox(height: 20),
+                Text(
+                  "Total Harga: Rp $totalHarga",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.teal,
+                  ),
+                ),
+
+                const SizedBox(height: 25),
+
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Pembelian berhasil disimpan!"),
+                          ),
+                        );
+                        Navigator.pop(context);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.teal,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text("Simpan"),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

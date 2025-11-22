@@ -120,19 +120,19 @@ class HomePage extends StatelessWidget {
                   _itemObat(
                     nama: "Paracetamol",
                     kategori: "Pereda Demam",
-                    harga: "Rp 10.000",
+                    harga: "Rp10000",
                     onTap: () {},
                   ),
                   _itemObat(
                     nama: "Amoxicillin",
                     kategori: "Antibiotik",
-                    harga: "Rp 25.000",
+                    harga: "Rp25000",
                     onTap: () {},
                   ),
                   _itemObat(
                     nama: "Betadine",
                     kategori: "Antiseptik",
-                    harga: "Rp 15.000",
+                    harga: "Rp15000",
                     onTap: () {},
                   ),
                 ],

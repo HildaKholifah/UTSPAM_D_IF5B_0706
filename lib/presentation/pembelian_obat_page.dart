@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projectuts/presentation/form_pembelian_page.dart';
 
 class PembelianObatPage extends StatelessWidget {
   PembelianObatPage({super.key});
@@ -75,7 +76,7 @@ class PembelianObatPage extends StatelessWidget {
                       style: const TextStyle(color: Colors.grey),
                     ),
                     Text(
-                      "Rp ${obat['harga']}",
+                      "Rp${obat['harga']}",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
@@ -83,11 +84,13 @@ class PembelianObatPage extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        // Sementara belum masuk form pembelian
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              "Membeli ${obat['nama']} - akan masuk form pembelian",
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FormPembelianPage(
+                              nama: obat['nama'],
+                              kategori: obat['kategori'],
+                              harga: obat['harga'],
                             ),
                           ),
                         );
