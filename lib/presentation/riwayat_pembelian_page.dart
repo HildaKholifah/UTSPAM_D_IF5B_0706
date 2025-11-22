@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:projectuts/presentation/home_page.dart';
 
 class RiwayatPembelianPage extends StatelessWidget {
-  RiwayatPembelianPage({super.key});
+  final Map<String, dynamic>? transaksiBaru;
+
+  RiwayatPembelianPage({super.key, this.transaksiBaru});
 
   final List<Map<String, dynamic>> dummyRiwayat = [
     {
@@ -32,11 +35,24 @@ class RiwayatPembelianPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (transaksiBaru != null) {
+      dummyRiwayat.insert(0, transaksiBaru!);
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF3DB4DF),
         title: const Text("Riwayat Pembelian"),
         centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          },
+        ),
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(12),

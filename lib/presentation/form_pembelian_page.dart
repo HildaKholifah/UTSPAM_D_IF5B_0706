@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:projectuts/presentation/riwayat_pembelian_page.dart';
 
 class FormPembelianPage extends StatefulWidget {
   final String nama;
@@ -67,11 +68,28 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
     }
 
     // TODO: Simpan ke SQLite di sini nanti
+    final transaksi = {
+      "nama": widget.nama,
+      "kategori": widget.kategori,
+      "harga": widget.harga,
+      "jumlah": int.parse(_jumlahCtr.text),
+      "total": totalHarga,
+      "metode": metodePembelian == "resep" ? "Resep Dokter" : "Langsung",
+      "nomorResep": metodePembelian == "resep" ? _nomorResepCtr.text : "-",
+      "tanggal": DateTime.now().toString().substring(0, 10),
+    };
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Pembelian berhasil disimpan!")),
     );
 
-    Navigator.pushReplacementNamed(context, "/riwayat");
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (_) => RiwayatPembelianPage(transaksiBaru: transaksi),
+      ),
+      (route) => false,
+    );
   }
 
   void _showAlert(String pesan) {
@@ -257,7 +275,7 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
 
                 const SizedBox(height: 20),
                 Text(
-                  "Total Harga: Rp $totalHarga",
+                  "Total Harga: Rp$totalHarga",
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
