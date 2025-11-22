@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projectuts/presentation/edit_transaksi_page.dart';
 
 class DetailPembelianPage extends StatelessWidget {
   final Map<String, dynamic> transaksi;
@@ -39,7 +40,7 @@ class DetailPembelianPage extends StatelessWidget {
             ElevatedButton(
               onPressed: onDelete,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 223, 72, 61),
+                backgroundColor: Color.fromARGB(255, 223, 61, 61),
               ),
               child: const Text(
                 "Batalkan Transaksi",

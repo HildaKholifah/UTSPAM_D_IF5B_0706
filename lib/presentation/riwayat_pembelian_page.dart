@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:projectuts/presentation/detail_pembelian_page.dart';
+import 'package:projectuts/presentation/edit_transaksi_page.dart';
 import 'package:projectuts/presentation/form_pembelian_page.dart';
 import 'package:projectuts/presentation/home_page.dart';
 
-class RiwayatPembelianPage extends StatelessWidget {
+class RiwayatPembelianPage extends StatefulWidget {
   final Map<String, dynamic>? transaksiBaru;
 
   RiwayatPembelianPage({super.key, this.transaksiBaru});
 
+  @override
+  State<RiwayatPembelianPage> createState() => _RiwayatPembelianPageState();
+}
+
+class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
   final List<Map<String, dynamic>> dummyRiwayat = [
     {
       "nama": "Paracetamol",
@@ -37,8 +43,8 @@ class RiwayatPembelianPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (transaksiBaru != null) {
-      dummyRiwayat.insert(0, transaksiBaru!);
+    if (widget.transaksiBaru != null) {
+      dummyRiwayat.insert(0, widget.transaksiBaru!);
     }
 
     return Scaffold(
@@ -127,7 +133,7 @@ class RiwayatPembelianPage extends StatelessWidget {
                       transaksi: data,
                       onDelete: () {
                         // hapus dari list
-                        dummyRiwayat.removeAt(index);
+                        setState(() => dummyRiwayat.removeAt(index));
                         Navigator.pop(context);
                       },
                       onEdit: () {
@@ -135,11 +141,14 @@ class RiwayatPembelianPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => FormPembelianPage(
-                              nama: data['nama'],
-                              kategori: data['kategori'],
-                              harga:
-                                  data['total'], // total bisa dipakai sebagai harga sementara
+                            builder: (_) => EditTransaksiPage(
+                              transaksi: data,
+                              onUpdate: (updated) {
+                                setState(() {
+                                  dummyRiwayat[index] = updated;
+                                });
+                                Navigator.pop(context);
+                              },
                             ),
                           ),
                         );
