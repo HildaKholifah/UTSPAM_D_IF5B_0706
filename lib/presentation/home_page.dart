@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:projectuts/presentation/login_page.dart';
 import 'package:projectuts/presentation/pembelian_obat_page.dart';
 import 'package:projectuts/presentation/register_page.dart';
+import 'package:projectuts/presentation/riwayat_pembelian_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -64,10 +65,10 @@ class HomePage extends StatelessWidget {
                   title: "Riwayat",
                   color: Color(0xFF7EC8E3),
                   onTap: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => RegisterPage(), // sementara
+                        builder: (context) => RiwayatPembelianPage(),
                       ),
                     );
                   },

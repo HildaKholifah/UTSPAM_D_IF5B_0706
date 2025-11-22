@@ -276,7 +276,7 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
                       backgroundColor: Colors.teal,
                       foregroundColor: Colors.white,
                     ),
-                    child: const Text("Konfirmasi Pembelian"),
+                    child: const Text("Beli Obat"),
                   ),
                 ),
               ],
