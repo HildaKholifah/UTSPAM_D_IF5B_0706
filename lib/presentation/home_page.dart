@@ -5,12 +5,12 @@ import 'package:projectuts/presentation/register_page.dart';
 import 'package:projectuts/presentation/riwayat_pembelian_page.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final String username;
+
+  HomePage({super.key, required this.username});
 
   @override
   Widget build(BuildContext context) {
-    Color greenPastel = const Color(0xFF98E2C6);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 61, 180, 223),
@@ -32,8 +32,8 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Halo, Pengguna!",
+            Text(
+              "Halo, $username!",
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
                 _menuButton(
                   icon: Icons.shopping_cart,
                   title: "Beli Obat",
-                  color: greenPastel,
+                  color: Color(0xFF98E2C6),
                   onTap: () {
                     Navigator.push(
                       context,

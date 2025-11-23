@@ -25,10 +25,7 @@ class UserRepository {
     await _userDao.insertUser(user);
   }
 
-  Future<bool> login({
-    required String email,
-    required String password,
-  }) async {
+  Future<bool> login({required String email, required String password}) async {
     User? user = await _userDao.getUserByEmail(email);
     if (user == null) return false;
     return user.password == password;
@@ -36,5 +33,10 @@ class UserRepository {
 
   Future<User?> getUserByUsername(String username) async {
     return await _userDao.getUserByUsername(username);
+  }
+
+  Future<String?> getUsernameByEmail(String email) async {
+    User? user = await _userDao.getUserByEmail(email);
+    return user?.username;
   }
 }
