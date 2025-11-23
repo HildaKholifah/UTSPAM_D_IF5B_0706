@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:projectuts/data/model/pembelian.dart';
 
 class DetailPembelianPage extends StatelessWidget {
-  final Map<String, dynamic> transaksi;
+  final Pembelian transaksi;
   final VoidCallback? onDelete;
   final VoidCallback? onEdit;
 
@@ -38,12 +39,12 @@ class DetailPembelianPage extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: ListView(
               children: [
-                if (transaksi["gambar"] != null)
+                if (transaksi.gambarObat != null)
                   Center(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(6),
                       child: Image.asset(
-                        transaksi["gambar"],
+                        transaksi.gambarObat!,
                         width: 120,
                         height: 120,
                         fit: BoxFit.cover,
@@ -53,13 +54,13 @@ class DetailPembelianPage extends StatelessWidget {
 
                 const SizedBox(height: 16),
 
-                _infoRow("Nama Obat", transaksi['nama']),
-                _infoRow("Kategori", transaksi['kategori']),
-                _infoRow("Nama Pembeli", transaksi['namaPembeli'] ?? "—"),
-                _infoRow("Jumlah", "${transaksi['jumlah']}"),
-                _infoRow("Harga Satuan", "Rp${transaksi['harga']}"),
-                _infoRow("Total Harga", "Rp${transaksi['total']}"),
-                _infoRow("Tanggal", transaksi['tanggal']),
+                _infoRow("Nama Obat", transaksi.nama),
+                _infoRow("Kategori", transaksi.kategori),
+                _infoRow("Nama Pembeli", transaksi.namaPembeli ?? "—"),
+                _infoRow("Jumlah", "${transaksi.jumlah}"),
+                _infoRow("Harga Satuan", "Rp${transaksi.harga}"),
+                _infoRow("Total Harga", "Rp${transaksi.total}"),
+                _infoRow("Tanggal", transaksi.tanggal),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,21 +75,21 @@ class DetailPembelianPage extends StatelessWidget {
                         vertical: 3,
                       ),
                       decoration: BoxDecoration(
-                        color: _badgeColor(transaksi["metode"]),
+                        color: _badgeColor(transaksi.metode),
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
-                        _metodeText(transaksi["metode"]),
+                        _metodeText(transaksi.metode),
                         style: const TextStyle(color: Colors.black),
                       ),
                     ),
                   ],
                 ),
 
-                if (transaksi['metode'] == "resep")
+                if (transaksi.metode == "resep")
                   _infoRow(
                     "Nomor Resep",
-                    transaksi["nomorResep"]?.toString() ?? "-",
+                    transaksi.nomorResep?.toString() ?? "-",
                   ),
 
                 const SizedBox(height: 20),

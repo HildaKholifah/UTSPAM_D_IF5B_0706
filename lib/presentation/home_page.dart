@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:projectuts/presentation/form_pembelian_page.dart';
 import 'package:projectuts/presentation/login_page.dart';
 import 'package:projectuts/presentation/pembelian_obat_page.dart';
-import 'package:projectuts/presentation/register_page.dart';
 import 'package:projectuts/presentation/riwayat_pembelian_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -89,7 +89,7 @@ class HomePage extends StatelessWidget {
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => RegisterPage()),
+                      MaterialPageRoute(builder: (context) => HomePage(username: username)),
                     );
                   },
                 ),
@@ -125,21 +125,57 @@ class HomePage extends StatelessWidget {
                     kategori: "Pereda Demam",
                     harga: "Rp10000",
                     gambar: "assets/obat/Paracetamol.png",
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => FormPembelianPage(
+                            nama: "Paracetamol",
+                            kategori: "Pereda Demam",
+                            harga: 10000,
+                            username: username,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                   _itemObat(
                     nama: "Amoxicillin",
                     kategori: "Antibiotik",
                     harga: "Rp25000",
                     gambar: "assets/obat/Amoxicillin.png",
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => FormPembelianPage(
+                            nama: "Amoxicillin",
+                            kategori: "Antibiotik",
+                            harga: 25000,
+                            username: username,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                   _itemObat(
                     nama: "Betadine",
                     kategori: "Antiseptik",
                     harga: "Rp15000",
                     gambar: "assets/obat/Betadine.png",
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => FormPembelianPage(
+                            nama: "Betadine",
+                            kategori: "Antiseptik",
+                            harga: 15000,
+                            username: username,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

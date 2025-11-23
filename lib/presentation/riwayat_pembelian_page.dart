@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:projectuts/data/model/pembelian.dart';
+import 'package:projectuts/data/repository/app_repository.dart';
 import 'package:projectuts/presentation/detail_pembelian_page.dart';
 import 'package:projectuts/presentation/edit_transaksi_page.dart';
 import 'package:projectuts/presentation/home_page.dart';
@@ -14,31 +16,7 @@ class RiwayatPembelianPage extends StatefulWidget {
 }
 
 class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
-  final List<Map<String, dynamic>> dummyRiwayat = [
-    {
-      "nama": "Paracetamol",
-      "kategori": "Pereda Demam",
-      "namaPembeli": "Hilda",
-      "jumlah": 2,
-      "harga": 10000,
-      "total": 20000,
-      "gambar": "assets/obat/Paracetamol.png",
-      "metode": "langsung",
-      "tanggal": "20 Nov 2025",
-    },
-    {
-      "nama": "Amoxicillin",
-      "kategori": "Antibiotik",
-      "namaPembeli": "Rahma",
-      "jumlah": 1,
-      "harga": 25000,
-      "total": 25000,
-      "gambar": "assets/obat/Amoxicillin.png",
-      "metode": "resep",
-      "tanggal": "21 Nov 2025",
-      "nomorResep": 123456,
-    },
-  ];
+  List<Pembelian> riwayat = [];
 
   Color _badgeColor(String metode) {
     return metode == "resep" ? Color(0xFF7EC8E3) : Color(0xFF98E2C6);
@@ -49,11 +27,24 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    if (widget.transaksiBaru != null) {
-      dummyRiwayat.insert(0, widget.transaksiBaru!);
-    }
+  void initState() {
+    super.initState();
+    _loadRiwayat();
+  }
 
+  // Method untuk mengambil data dari database
+  Future<void> _loadRiwayat() async { 
+    var dataDariDb = await AppRepository().getRiwayatPembelian(widget.username); 
+    setState(() {
+      riwayat = dataDariDb;
+      if (widget.transaksiBaru != null) {
+        riwayat.insert(0, Pembelian.fromMap(widget.transaksiBaru!));
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
@@ -73,9 +64,9 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(12),
-        itemCount: dummyRiwayat.length,
+        itemCount: riwayat.length,
         itemBuilder: (context, index) {
-          var data = dummyRiwayat[index];
+          var data = riwayat[index];
 
           return Card(
             elevation: 3,
@@ -87,20 +78,20 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(4),
                 child: Image.asset(
-                  data["gambar"],
+                  data.gambarObat ?? 'asset/obat/Kosong.png',
                   width: 35,
                   height: 35,
                   fit: BoxFit.cover,
                 ),
               ),
               title: Text(
-                data["nama"],
+                data.nama,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(data["kategori"]),
+                  Text(data.kategori),
                   const SizedBox(height: 6),
                   Row(
                     children: [
@@ -110,11 +101,11 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
                           vertical: 3,
                         ),
                         decoration: BoxDecoration(
-                          color: _badgeColor(data["metode"]),
+                          color: _badgeColor(data.metode),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
-                          _metodeText(data["metode"]),
+                          _metodeText(data.metode),
                           style: const TextStyle(
                             color: Colors.black,
                             fontSize: 11,
@@ -123,7 +114,7 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        data["tanggal"],
+                        data.tanggal,
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.grey,
@@ -134,7 +125,7 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
                 ],
               ),
               trailing: Text(
-                "Rp ${data["total"]}",
+                "Rp ${data.total}",
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -150,11 +141,10 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
                       transaksi: data,
                       onDelete: () {
                         // hapus dari list
-                        setState(() => dummyRiwayat.removeAt(index));
+                        setState(() => riwayat.removeAt(index));
                         Navigator.pop(context);
                       },
                       onEdit: () {
-                        // buka halaman edit transaksi
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -162,7 +152,7 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
                               transaksi: data,
                               onUpdate: (updated) {
                                 setState(() {
-                                  dummyRiwayat[index] = updated;
+                                  riwayat[index] = updated;
                                 });
                                 Navigator.pop(context);
                               },

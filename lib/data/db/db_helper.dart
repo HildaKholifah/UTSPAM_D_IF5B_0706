@@ -12,6 +12,7 @@ class DBHelper {
   final String columnMetode = 'metode';
   final String columnNomorResep = 'nomorResep';
   final String columnGambarResep = 'gambarResep';
+  final String columnGambarObat = 'gambarObat';
   final String columnTanggal = 'tanggal';
 
   factory DBHelper() => _instance;
@@ -27,6 +28,7 @@ class DBHelper {
 
   Future<Database> _initDB() async {
     String path = join(await getDatabasesPath(), "mediklik.db");
+    deleteDatabase(path);
     return await openDatabase(
       path,
       version: 2,
@@ -66,11 +68,13 @@ class DBHelper {
         kategori TEXT NOT NULL,
         namaPembeli TEXT,
         jumlah INTEGER NOT NULL,
+        catatan TEXT,
         harga INTEGER NOT NULL,
         total INTEGER NOT NULL,
         metode TEXT NOT NULL,
         nomorResep TEXT,
         gambarResep TEXT,
+        gambarObat TEXT,
         tanggal TEXT NOT NULL
       )
     ''');
@@ -80,10 +84,12 @@ class DBHelper {
     if (oldVersion < 2) {
       await db.execute("ALTER TABLE pembelian ADD COLUMN kategori TEXT;");
       await db.execute("ALTER TABLE pembelian ADD COLUMN namaPembeli TEXT;");
+      await db.execute("ALTER TABLE pembelian ADD COLUMN catatan TEXT;");
       await db.execute("ALTER TABLE pembelian ADD COLUMN total INTEGER;");
       await db.execute("ALTER TABLE pembelian ADD COLUMN metode TEXT;");
       await db.execute("ALTER TABLE pembelian ADD COLUMN nomorResep TEXT;");
       await db.execute("ALTER TABLE pembelian ADD COLUMN gambarResep TEXT;");
+      await db.execute("ALTER TABLE pembelian ADD COLUMN gambarObat TEXT;");
     }
   }
 }

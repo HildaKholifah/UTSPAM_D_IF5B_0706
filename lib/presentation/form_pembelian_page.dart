@@ -36,6 +36,16 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
   int totalHarga = 0;
   File? fotoResep;
 
+  String _getGambarDummy(String namaObat) {
+    final Map<String, String> gambarObatDummy = {
+      'Paracetamol': 'assets/obat/Paracetamol.png',
+      'Amoxicillin': 'assets/obat/Amoxicillin.png',
+      'Oralit': 'assets/obat/Oralit.png',
+      'Betadine': 'assets/obat/Betadine.png',
+    };
+    return gambarObatDummy[namaObat] ?? 'assets/obat/default.png';
+  }
+
   @override
   void initState() {
     super.initState();
@@ -74,14 +84,15 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
     Pembelian pembelian = Pembelian(
       nama: widget.nama,
       kategori: widget.kategori,
-      namaPembeli: _namaPembeliCtr.text,
+      namaPembeli: widget.username,
       jumlah: int.parse(_jumlahCtr.text),
       harga: widget.harga,
       total: totalHarga,
       tanggal: DateTime.now().toString().substring(0, 10),
       metode: metodePembelian == "resep" ? "Resep Dokter" : "Langsung",
       nomorResep: metodePembelian == "resep" ? _nomorResepCtr.text : "",
-      gambarResep: fotoResep?.path ?? "",
+      gambarResep: fotoResep?.path, //error
+      gambarObat: _getGambarDummy(widget.nama),
     );
 
     await AppRepository().tambahPembelian(pembelian);

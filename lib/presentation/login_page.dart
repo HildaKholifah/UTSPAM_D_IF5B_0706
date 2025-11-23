@@ -130,12 +130,13 @@ class _LoginPageState extends State<LoginPage> {
                               String? username = await _userRepository
                                   .getUsernameByEmail(_emailCtr.text);
                               if (username != null) {
-                                Navigator.pushReplacement(
+                                Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         HomePage(username: username),
                                   ),
+                                  (route) => false,
                                 );
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(

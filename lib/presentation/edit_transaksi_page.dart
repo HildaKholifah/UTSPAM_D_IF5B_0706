@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:projectuts/data/model/pembelian.dart';
 
 class EditTransaksiPage extends StatefulWidget {
-  final Map<String, dynamic> transaksi;
-  final Function(Map<String, dynamic>)
-  onUpdate; // callback untuk update transaksi
+  final Pembelian transaksi;
+  final Function(Pembelian) onUpdate; // callback untuk update transaksi
 
   const EditTransaksiPage({
     super.key,
@@ -25,22 +25,26 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
   late TextEditingController _nomorResepCtr;
   String? metodePembelian;
   int totalHarga = 0;
-  File? fotoResep;
+  File? gambarResep;
 
   @override
   void initState() {
     super.initState();
     _jumlahCtr = TextEditingController(
-      text: widget.transaksi['jumlah'].toString(),
+      text: widget.transaksi.jumlah.toString(),
     );
-    _catatanCtr = TextEditingController(
-      text: widget.transaksi['catatan'] ?? '',
-    );
+    _catatanCtr = TextEditingController(text: widget.transaksi.catatan ?? '');
     _nomorResepCtr = TextEditingController(
-      text: widget.transaksi['nomorResep'] ?? '',
+      text: widget.transaksi.nomorResep ?? '',
     );
-    metodePembelian = widget.transaksi['metode'] ?? 'langsung';
-    fotoResep = widget.transaksi['fotoResep'];
+    metodePembelian =
+        widget.transaksi.metode?.toLowerCase().contains("resep") == true
+        ? "resep"
+        : "langsung";
+    if (widget.transaksi.gambarResep != null &&
+        File(widget.transaksi.gambarResep!).existsSync()) {
+      gambarResep = File(widget.transaksi.gambarResep!);
+    }
 
     _hitungTotal();
     _jumlahCtr.addListener(_hitungTotal);
@@ -49,7 +53,7 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
   void _hitungTotal() {
     int qty = int.tryParse(_jumlahCtr.text) ?? 0;
     setState(() {
-      totalHarga = (widget.transaksi['harga'] ?? 0) * qty;
+      totalHarga = (widget.transaksi.harga ?? 0) * qty;
     });
   }
 
@@ -61,29 +65,34 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
     );
 
     if (file != null) {
-      setState(() => fotoResep = File(file.path));
+      setState(() => gambarResep = File(file.path));
     }
   }
 
   void _validasiDanUpdate() {
     if (!_formKey.currentState!.validate()) return;
 
-    if (metodePembelian == "resep" && fotoResep == null) {
+    if (metodePembelian == "resep" && gambarResep == null) {
       _showAlert(
         "Foto resep wajib diunggah untuk pembelian dengan resep dokter!",
       );
       return;
     }
 
-    final updatedTransaksi = {
-      ...widget.transaksi,
-      'jumlah': int.parse(_jumlahCtr.text),
-      'catatan': _catatanCtr.text,
-      'metode': metodePembelian,
-      'nomorResep': metodePembelian == "resep" ? _nomorResepCtr.text : "-",
-      'total': totalHarga,
-      'fotoResep': fotoResep,
-    };
+    final updatedTransaksi = Pembelian(
+      nama: widget.transaksi.nama,
+      kategori: widget.transaksi.kategori,
+      namaPembeli: widget.transaksi.namaPembeli,
+      jumlah: int.parse(_jumlahCtr.text),
+      catatan: _catatanCtr.text,
+      harga: widget.transaksi.harga,
+      total: totalHarga,
+      metode: metodePembelian!,
+      nomorResep: metodePembelian == "resep" ? _nomorResepCtr.text : null,
+      gambarResep: gambarResep?.path ?? widget.transaksi.gambarResep,
+      gambarObat: widget.transaksi.gambarObat,
+      tanggal: widget.transaksi.tanggal,
+    );
 
     widget.onUpdate(updatedTransaksi);
 
@@ -118,18 +127,18 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Nama Obat: ${widget.transaksi['nama']}",
+                "Nama Obat: ${widget.transaksi.nama}",
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                "Kategori: ${widget.transaksi['kategori']}",
+                "Kategori: ${widget.transaksi.kategori}",
                 style: const TextStyle(fontSize: 14, color: Colors.grey),
               ),
               Text(
-                "Harga Satuan: Rp${widget.transaksi['harga']}",
+                "Harga Satuan: Rp${widget.transaksi.harga}",
                 style: const TextStyle(fontSize: 14, color: Colors.black87),
               ),
               const SizedBox(height: 20),
@@ -229,11 +238,11 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
                       ],
                     ),
 
-                    if (fotoResep != null)
+                    if (gambarResep != null)
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.file(
-                          fotoResep!,
+                          gambarResep!,
                           height: 120,
                           width: double.infinity,
                           fit: BoxFit.cover,

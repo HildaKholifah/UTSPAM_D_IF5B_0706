@@ -8,7 +8,11 @@ import 'package:projectuts/data/model/user.dart';
 class AppRepository {
   final _userDao = UserDao();
   final _obatDao = ObatDao();
-  final _pembelianDao = PembelianDao();
+  late final _pembelianDao = PembelianDao();
+
+  static final _instance = AppRepository._internal();
+  AppRepository._internal();
+  factory AppRepository() => _instance;
 
   Future<void> register({
     required String nama,
@@ -46,27 +50,26 @@ class AppRepository {
     return user?.username;
   }
 
-  Future<int> tambahObat(Obat obat) =>
-      _obatDao.insertObat(obat);
+  Future<int> tambahObat(Obat obat) => _obatDao.insertObat(obat);
 
-  Future<List<Obat>> getAllObat() =>
-      _obatDao.getAllObat();
+  Future<List<Obat>> getAllObat() => _obatDao.getAllObat();
 
-  Future<int> updateObat(Obat obat) =>
-      _obatDao.updateObat(obat);
+  Future<int> updateObat(Obat obat) => _obatDao.updateObat(obat);
 
-  Future<int> deleteObat(int id) =>
-      _obatDao.deleteObat(id);
+  Future<int> deleteObat(int id) => _obatDao.deleteObat(id);
 
   Future<int> tambahPembelian(Pembelian pembelian) =>
       _pembelianDao.insertPembelian(pembelian);
 
-  Future<List<Pembelian>> getAllPembelian() =>
-      _pembelianDao.getAllPembelian();
+  Future<List<Pembelian>> getAllPembelian() => _pembelianDao.getAllPembelian();
 
   Future<int> updatePembelian(Pembelian pembelian) =>
       _pembelianDao.updatePembelian(pembelian);
 
-  Future<int> deletePembelian(int id) =>
-      _pembelianDao.deletePembelian(id);
+  Future<int> deletePembelian(int id) => _pembelianDao.deletePembelian(id);
+
+  Future<List<Pembelian>> getRiwayatPembelian(String username) async {
+    List<Pembelian> semuaPembelian = await _pembelianDao.getAllPembelian();
+    return semuaPembelian.where((p) => p.namaPembeli == username).toList();
+  }
 }

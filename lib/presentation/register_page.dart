@@ -286,7 +286,12 @@ class _RegisterPageState extends State<RegisterPage> {
                               "Register berhasil. Silahkan login!",
                               style: TextStyle(color: Colors.white),
                             ),
-                            backgroundColor: Colors.red,
+                            backgroundColor: const Color.fromARGB(
+                              255,
+                              54,
+                              244,
+                              168,
+                            ),
                           ),
                         );
                         Navigator.pushReplacement(
