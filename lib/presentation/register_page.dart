@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projectuts/data/repository/user_repository.dart';
 import 'package:projectuts/presentation/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -21,6 +22,8 @@ class _RegisterPageState extends State<RegisterPage> {
   String? _gender;
   bool _isObscure1 = true;
   bool _isObscure2 = true;
+
+  final _userRepository = UserRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -265,8 +268,20 @@ class _RegisterPageState extends State<RegisterPage> {
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
+                        await _userRepository.register(
+                          nama: _namaLengkapCtr.text, 
+                          email: _emailCtr.text, 
+                          alamat: _alamatCtr.text, 
+                          telepon: _telpCtr.text, 
+                          username: _usernameCtr.text, 
+                          password: _passCtr.text, 
+                          gender: _gender ?? '',
+                        );
+
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Register berhasil. Silahkan login!")));
+
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (context) => LoginPage()),
