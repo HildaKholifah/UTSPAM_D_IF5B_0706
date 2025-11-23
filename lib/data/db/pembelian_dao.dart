@@ -11,8 +11,10 @@ class PembelianDao {
 
   Future<List<Pembelian>> getAllPembelian() async {
     final db = await dbHelper.database;
-    final result = await db.query(DBHelper.tabelPembelian, orderBy: "id DESC");
-    return result.map((e) => Pembelian.fromMap(e)).toList();
+    final maps = await db.query(DBHelper.tabelPembelian, orderBy: "id DESC");
+    return List.generate(maps.length, (i) {
+      return Pembelian.fromMap(maps[i]);
+    });
   }
 
   Future<int> updatePembelian(Pembelian pembelian) async {

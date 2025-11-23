@@ -3,7 +3,16 @@ import 'package:path/path.dart';
 
 class DBHelper {
   static final DBHelper _instance = DBHelper._internal();
-  static const String tabelPembelian = "tabelPembelian";
+  static final String tabelPembelian = "pembelian";
+
+  final String columnId = 'id';
+  final String columnNamaPembeli = 'namaPembeli';
+  final String columnNamaObat = 'namaObat';
+  final String columnJumlah = 'jumlah';
+  final String columnMetode = 'metode';
+  final String columnNomorResep = 'nomorResep';
+  final String columnGambarResep = 'gambarResep';
+  final String columnTanggal = 'tanggal';
 
   factory DBHelper() => _instance;
   DBHelper._internal();
@@ -51,20 +60,23 @@ class DBHelper {
     ''');
 
     await db.execute('''
-      CREATE TABLE tabelPembelian(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nama_obat TEXT NOT NULL,
-        harga INTEGER NOT NULL,
-        tanggal TEXT NOT NULL,
-        gambar TEXT
-      )
-    ''');
+  CREATE TABLE pembelian (
+    columnId INTEGER PRIMARY KEY AUTOINCREMENT,
+    columnNamaPembeli TEXT NOT NULL,
+    columnNamaObat TEXT NOT NULL,
+    columnJumlah INTEGER NOT NULL,
+    columnMetode TEXT NOT NULL,
+    columnNomorResep INTEGER,
+    columnGambarResep TEXT,
+    columnTanggal TEXT NOT NULL
+  )
+''');
   }
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
       await db.execute('''
-        CREATE TABLE tabelPembelian(
+        CREATE TABLE pembelian(
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           nama_obat TEXT NOT NULL,
           harga INTEGER NOT NULL,

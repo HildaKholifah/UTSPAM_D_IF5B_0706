@@ -6,10 +6,10 @@ class Pembelian {
   int jumlah;
   int harga;
   int total;
-  String tanggal;
   String metode;
   String? nomorResep;
-  String? gambar;
+  String? gambarResep;
+  String tanggal;
 
   Pembelian({
     this.id,
@@ -19,10 +19,10 @@ class Pembelian {
     required this.jumlah,
     required this.harga,
     required this.total,
-    required this.tanggal,
     required this.metode,
     this.nomorResep,
-    this.gambar,
+    this.gambarResep,
+    required this.tanggal,
   });
 
   factory Pembelian.fromMap(Map<String, dynamic> map) {
@@ -34,10 +34,10 @@ class Pembelian {
       jumlah: map['jumlah'],
       harga: map['harga'],
       total: map['total'],
-      tanggal: map['tanggal'],
       metode: map['metode'],
       nomorResep: map['nomorResep'],
-      gambar: map['gambar'],
+      gambarResep: map['gambarResep'],
+      tanggal: map['tanggal'],
     );
   }
 
@@ -50,10 +50,10 @@ class Pembelian {
       'jumlah': jumlah,
       'harga': harga,
       'total': total,
-      'tanggal': tanggal,
       'metode': metode,
       'nomorResep': nomorResep,
-      'gambar': gambar,
+      'gambarResep': gambarResep,
+      'tanggal': tanggal,
     };
   }
 }

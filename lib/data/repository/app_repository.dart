@@ -1,11 +1,14 @@
 import 'package:projectuts/data/db/obat_dao.dart';
+import 'package:projectuts/data/db/pembelian_dao.dart';
 import 'package:projectuts/data/db/user_dao.dart';
 import 'package:projectuts/data/model/obat.dart';
+import 'package:projectuts/data/model/pembelian.dart';
 import 'package:projectuts/data/model/user.dart';
 
 class AppRepository {
   final _userDao = UserDao();
   final _obatDao = ObatDao();
+  final _pembelianDao = PembelianDao();
 
   Future<void> register({
     required String nama,
@@ -54,4 +57,16 @@ class AppRepository {
 
   Future<int> deleteObat(int id) =>
       _obatDao.deleteObat(id);
+
+  Future<int> tambahPembelian(Pembelian pembelian) =>
+      _pembelianDao.insertPembelian(pembelian);
+
+  Future<List<Pembelian>> getAllPembelian() =>
+      _pembelianDao.getAllPembelian();
+
+  Future<int> updatePembelian(Pembelian pembelian) =>
+      _pembelianDao.updatePembelian(pembelian);
+
+  Future<int> deletePembelian(int id) =>
+      _pembelianDao.deletePembelian(id);
 }
