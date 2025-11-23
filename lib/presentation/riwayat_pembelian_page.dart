@@ -9,11 +9,7 @@ class RiwayatPembelianPage extends StatefulWidget {
   final Map<String, dynamic>? transaksiBaru;
   final String username;
 
-  RiwayatPembelianPage({
-    Key? key,
-    this.transaksiBaru,
-    required this.username,
-  });
+  RiwayatPembelianPage({Key? key, this.transaksiBaru, required this.username});
 
   @override
   State<RiwayatPembelianPage> createState() => _RiwayatPembelianPageState();
@@ -25,7 +21,7 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
       "nama": "Paracetamol",
       "kategori": "Pereda Demam",
       "total": 20000,
-      "gambar": Icons.medication,
+      "gambar": "assets/obat/Paracetamol.png",
       "metode": "langsung",
       "tanggal": "20 Nov 2025",
     },
@@ -33,7 +29,7 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
       "nama": "Amoxicillin",
       "kategori": "Antibiotik",
       "total": 25000,
-      "gambar": Icons.medical_services,
+      "gambar": "assets/obat/Amoxicillin.png",
       "metode": "resep",
       "tanggal": "21 Nov 2025",
     },
@@ -63,7 +59,9 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HomePage(username: widget.username)),
+              MaterialPageRoute(
+                builder: (context) => HomePage(username: widget.username),
+              ),
             );
           },
         ),
@@ -81,7 +79,15 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
             ),
             margin: const EdgeInsets.only(bottom: 12),
             child: ListTile(
-              leading: Icon(data["gambar"], size: 40, color: Colors.teal),
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: Image.asset(
+                  data["gambar"],
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
+                ),
+              ),
               title: Text(
                 data["nama"],
                 style: const TextStyle(fontWeight: FontWeight.bold),
