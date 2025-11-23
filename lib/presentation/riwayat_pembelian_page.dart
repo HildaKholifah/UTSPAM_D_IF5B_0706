@@ -1,12 +1,19 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:projectuts/presentation/detail_pembelian_page.dart';
 import 'package:projectuts/presentation/edit_transaksi_page.dart';
 import 'package:projectuts/presentation/home_page.dart';
 
 class RiwayatPembelianPage extends StatefulWidget {
   final Map<String, dynamic>? transaksiBaru;
+  final String username;
 
-  RiwayatPembelianPage({super.key, this.transaksiBaru});
+  RiwayatPembelianPage({
+    Key? key,
+    this.transaksiBaru,
+    required this.username,
+  });
 
   @override
   State<RiwayatPembelianPage> createState() => _RiwayatPembelianPageState();
@@ -56,7 +63,7 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HomePage()),
+              MaterialPageRoute(builder: (context) => HomePage(username: widget.username)),
             );
           },
         ),

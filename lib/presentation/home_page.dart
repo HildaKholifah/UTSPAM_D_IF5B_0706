@@ -55,7 +55,7 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PembelianObatPage(),
+                        builder: (context) => PembelianObatPage(username: username),
                       ),
                     );
                   },
@@ -68,7 +68,8 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => RiwayatPembelianPage(),
+                        builder: (context) =>
+                            RiwayatPembelianPage(username: username),
                       ),
                     );
                   },

@@ -271,17 +271,24 @@ class _RegisterPageState extends State<RegisterPage> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         await _userRepository.register(
-                          nama: _namaLengkapCtr.text, 
-                          email: _emailCtr.text, 
-                          alamat: _alamatCtr.text, 
-                          telepon: _telpCtr.text, 
-                          username: _usernameCtr.text, 
-                          password: _passCtr.text, 
+                          nama: _namaLengkapCtr.text,
+                          email: _emailCtr.text,
+                          alamat: _alamatCtr.text,
+                          telepon: _telpCtr.text,
+                          username: _usernameCtr.text,
+                          password: _passCtr.text,
                           gender: _gender ?? '',
                         );
 
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Register berhasil. Silahkan login!")));
-
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              "Register berhasil. Silahkan login!",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (context) => LoginPage()),

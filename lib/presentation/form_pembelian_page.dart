@@ -8,12 +8,14 @@ class FormPembelianPage extends StatefulWidget {
   final String nama;
   final String kategori;
   final int harga;
+  final String username;
 
-  const FormPembelianPage({
+  FormPembelianPage({
     super.key,
     required this.nama,
     required this.kategori,
     required this.harga,
+    required this.username,
   });
 
   @override
@@ -88,7 +90,10 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
-        builder: (_) => RiwayatPembelianPage(transaksiBaru: transaksi),
+        builder: (_) => RiwayatPembelianPage(
+          transaksiBaru: transaksi,
+          username: widget.username,
+        ),
       ),
       (route) => false,
     );

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:projectuts/presentation/form_pembelian_page.dart';
 
 class PembelianObatPage extends StatelessWidget {
-  PembelianObatPage({super.key});
+  final String username;
+
+  PembelianObatPage({super.key, required this.username});
 
   final List<Map<String, dynamic>> dataObat = [
     {
@@ -91,6 +93,7 @@ class PembelianObatPage extends StatelessWidget {
                               nama: obat['nama'],
                               kategori: obat['kategori'],
                               harga: obat['harga'],
+                              username: username,
                             ),
                           ),
                         );
