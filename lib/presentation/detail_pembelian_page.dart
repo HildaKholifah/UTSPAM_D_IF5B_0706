@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:projectuts/presentation/edit_transaksi_page.dart';
 
 class DetailPembelianPage extends StatelessWidget {
   final Map<String, dynamic> transaksi;

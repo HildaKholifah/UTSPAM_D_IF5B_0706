@@ -1,0 +1,16 @@
+[33m143ada1[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m Membuat halaman edit_transaksi
+[33m45b10ed[m[33m ([m[1;31morigin/main[m[33m)[m Membuat halaman Detail Pembelian dan memperbaiki beberapa detail di form_pembelian dan riwayat pembelian
+[33m9ba481c[m Mengubah form_pembelian dan riwayat_pembelian agar bisa menyimpan data pembelian obat yang baru dipesan agar ditampilkan di riwayat pembelian
+[33m985f532[m Membuat halaman Riwayat Pembelian, mengubah navigasi dari home page ke riwayat pembelian, dan mengubah button konfirmasi pembelian dengan beli obat
+[33m04a3547[m Menambah dependencies di pubspec.yaml & Mengubah kondisi ketika menggunakan metode pembelian resep dokter akan disuruh mengupload foto (bisa pilih kamera atau dari galeri
+[33m9250502[m Membuat halaman Formulir Pembelian dan mengubah format harga dari yang ada spasi menjadi tanpa spasi
+[33m9ec358f[m Mengubah navigasi dari home ke halaman Pembelian Obat
+[33m7b0e0a8[m Membuat halaman pembelian obat
+[33mbedf11e[m Mengubah tampilan menu dan menambah harga obat di halaman home
+[33m20bfa1c[m Membuat halaman home
+[33mf596df8[m Membuat halaman home
+[33m4b6c34b[m Menambahkan gambar dan logo di halaman login
+[33m8db6b38[m Membuat halaman login
+[33m60ceb17[m Membuat halaman registrasi
+[33me97e36d[m Mengupload semua file project
+[33m2737087[m Commit pertama
