@@ -3,12 +3,14 @@ class Obat {
   String nama;
   String kategori;
   int harga;
+  String gambar;
 
   Obat({
     this.id,
     required this.nama,
     required this.kategori,
     required this.harga,
+    required this.gambar,
   });
 
   Map<String, dynamic> toMap() {
@@ -21,6 +23,7 @@ class Obat {
       nama: map['nama'],
       kategori: map['kategori'],
       harga: map['harga'],
+      gambar: map['gambar'],
     );
   }
 }

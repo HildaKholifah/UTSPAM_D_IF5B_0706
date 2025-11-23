@@ -11,8 +11,8 @@ class ObatDao {
 
   Future<List<Obat>> getAllObat() async {
     final db = await dbHelper.database;
-    final maps = await db.query('obat');
-    return maps.map((map) => Obat.fromMap(map)).toList();
+    final result = await db.query('obat');
+    return result.map((e) => Obat.fromMap(e)).toList();
   }
 
   Future<int> updateObat(Obat obat) async {

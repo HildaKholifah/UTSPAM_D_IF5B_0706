@@ -64,6 +64,9 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/presentation/Logo MediKlik.png
+    - assets/obat/Paracetamol.png
+    - assets/obat/Amoxicillin.png
+    - assets/obat/Betadine.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

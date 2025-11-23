@@ -38,7 +38,8 @@ class DBHelper {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nama TEXT NOT NULL,
         kategori TEXT NOT NULL,
-        harga INTEGER NOT NULL
+        harga INTEGER NOT NULL,
+        gambar TEXT,
       )
     ''');
   }

@@ -6,7 +6,6 @@ import 'package:projectuts/presentation/riwayat_pembelian_page.dart';
 
 class HomePage extends StatelessWidget {
   final String username;
-
   HomePage({super.key, required this.username});
 
   @override
@@ -55,7 +54,8 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PembelianObatPage(username: username),
+                        builder: (context) =>
+                            PembelianObatPage(username: username),
                       ),
                     );
                   },
@@ -98,9 +98,10 @@ class HomePage extends StatelessWidget {
                   title: "Logout",
                   color: Colors.redAccent,
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (_) => const LoginPage()),
+                      (route) => false,
                     );
                   },
                 ),
@@ -123,18 +124,21 @@ class HomePage extends StatelessWidget {
                     nama: "Paracetamol",
                     kategori: "Pereda Demam",
                     harga: "Rp10000",
+                    gambar: "assets/obat/Paracetamol.png",
                     onTap: () {},
                   ),
                   _itemObat(
                     nama: "Amoxicillin",
                     kategori: "Antibiotik",
                     harga: "Rp25000",
+                    gambar: "assets/obat/Amoxicillin.png",
                     onTap: () {},
                   ),
                   _itemObat(
                     nama: "Betadine",
                     kategori: "Antiseptik",
                     harga: "Rp15000",
+                    gambar: "assets/obat/Betadine.png",
                     onTap: () {},
                   ),
                 ],
@@ -184,12 +188,16 @@ class HomePage extends StatelessWidget {
     required String nama,
     required String kategori,
     required String harga,
+    required String gambar,
     required VoidCallback onTap,
   }) {
     return Card(
       elevation: 2,
       child: ListTile(
-        leading: const Icon(Icons.medical_services, color: Colors.teal),
+        leading: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.asset(gambar, width: 50, height: 50, fit: BoxFit.cover),
+        ),
         title: Text(nama, style: TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
