@@ -3,6 +3,8 @@ import 'package:path/path.dart';
 
 class DBHelper {
   static final DBHelper _instance = DBHelper._internal();
+  static const String tabelPembelian = "tabelPembelian";
+
   factory DBHelper() => _instance;
   DBHelper._internal();
 
@@ -44,12 +46,12 @@ class DBHelper {
         nama TEXT NOT NULL,
         kategori TEXT NOT NULL,
         harga INTEGER NOT NULL,
-        gambar TEXT,
+        gambar TEXT
       )
     ''');
 
     await db.execute('''
-      CREATE TABLE pembelian(
+      CREATE TABLE tabelPembelian(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nama_obat TEXT NOT NULL,
         harga INTEGER NOT NULL,
@@ -62,7 +64,7 @@ class DBHelper {
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
       await db.execute('''
-        CREATE TABLE pembelian(
+        CREATE TABLE tabelPembelian(
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           nama_obat TEXT NOT NULL,
           harga INTEGER NOT NULL,
