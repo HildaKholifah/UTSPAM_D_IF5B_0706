@@ -14,11 +14,11 @@ class DetailPembelianPage extends StatelessWidget {
   });
 
   Color _badgeColor(String metode) {
-    return metode == "resep" ? Color(0xFF7EC8E3) : Color(0xFF98E2C6);
+    return metode == "Resep Dokter" ? Color(0xFF7EC8E3) : Color(0xFF98E2C6);
   }
 
   String _metodeText(String metode) {
-    return metode == "resep" ? "Resep Dokter" : "Pembelian Langsung";
+    return metode;
   }
 
   @override
@@ -86,7 +86,7 @@ class DetailPembelianPage extends StatelessWidget {
                   ],
                 ),
 
-                if (transaksi.metode == "resep")
+                if (transaksi.metode == "Resep Dokter")
                   _infoRow(
                     "Nomor Resep",
                     transaksi.nomorResep?.toString() ?? "-",

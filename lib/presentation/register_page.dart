@@ -281,17 +281,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         );
 
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              "Register berhasil. Silahkan login!",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            backgroundColor: const Color.fromARGB(
-                              255,
-                              54,
-                              244,
-                              168,
-                            ),
+                          const SnackBar(
+                            content: Text("Register berhasil. Silahkan login!"),
                           ),
                         );
                         Navigator.pushReplacement(

@@ -19,11 +19,11 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
   List<Pembelian> riwayat = [];
 
   Color _badgeColor(String metode) {
-    return metode == "resep" ? Color(0xFF7EC8E3) : Color(0xFF98E2C6);
+    return metode == "Resep Dokter" ? Color(0xFF7EC8E3) : Color(0xFF98E2C6);
   }
 
   String _metodeText(String metode) {
-    return metode == "resep" ? "Resep Dokter" : "Pembelian Langsung";
+    return metode; // tampilkan sesuai field metode langsung
   }
 
   @override
@@ -33,8 +33,8 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
   }
 
   // Method untuk mengambil data dari database
-  Future<void> _loadRiwayat() async { 
-    var dataDariDb = await AppRepository().getRiwayatPembelian(widget.username); 
+  Future<void> _loadRiwayat() async {
+    var dataDariDb = await AppRepository().getRiwayatPembelian(widget.username);
     setState(() {
       riwayat = dataDariDb;
       if (widget.transaksiBaru != null) {

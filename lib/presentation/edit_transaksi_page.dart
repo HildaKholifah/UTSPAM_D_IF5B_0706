@@ -79,6 +79,8 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
       return;
     }
 
+    String metodeDisplay = metodePembelian == "resep" ? "Resep Dokter" : "Langsung";
+
     final updatedTransaksi = Pembelian(
       nama: widget.transaksi.nama,
       kategori: widget.transaksi.kategori,
@@ -87,7 +89,7 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
       catatan: _catatanCtr.text,
       harga: widget.transaksi.harga,
       total: totalHarga,
-      metode: metodePembelian!,
+      metode: metodeDisplay,
       nomorResep: metodePembelian == "resep" ? _nomorResepCtr.text : null,
       gambarResep: gambarResep?.path ?? widget.transaksi.gambarResep,
       gambarObat: widget.transaksi.gambarObat,

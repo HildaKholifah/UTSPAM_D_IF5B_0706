@@ -81,6 +81,10 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
       return;
     }
 
+    String metodeDisplay = metodePembelian == "resep"
+        ? "Resep Dokter"
+        : "Langsung";
+
     Pembelian pembelian = Pembelian(
       nama: widget.nama,
       kategori: widget.kategori,
@@ -90,7 +94,7 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
       total: totalHarga,
       tanggal: DateTime.now().toString().substring(0, 10),
       metode: metodePembelian == "resep" ? "Resep Dokter" : "Langsung",
-      nomorResep: metodePembelian == "resep" ? _nomorResepCtr.text : "",
+      nomorResep: metodeDisplay,
       gambarResep: fotoResep?.path, //error
       gambarObat: _getGambarDummy(widget.nama),
     );
@@ -243,11 +247,6 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
                             if (v!.isEmpty) return "Nomor resep wajib diisi";
                             if (v.length < 6) {
                               return "Nomor resep minimal 6 karakter";
-                            }
-                            if (!RegExp(
-                              r'^(?=.*[A-Za-z])(?=.*\d)',
-                            ).hasMatch(v)) {
-                              return "Harus kombinasi huruf & angka";
                             }
                           }
                           return null;
