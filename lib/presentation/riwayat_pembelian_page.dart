@@ -43,7 +43,7 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
   ];
 
   Color _badgeColor(String metode) {
-    return metode == "resep" ? Colors.orange : Colors.blue;
+    return metode == "resep" ? Color(0xFF7EC8E3) : Color(0xFF98E2C6);
   }
 
   String _metodeText(String metode) {
@@ -118,7 +118,7 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
                         child: Text(
                           _metodeText(data["metode"]),
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 11,
                           ),
                         ),

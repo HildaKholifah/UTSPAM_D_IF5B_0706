@@ -13,7 +13,7 @@ class DetailPembelianPage extends StatelessWidget {
   });
 
   Color _badgeColor(String metode) {
-    return metode == "resep" ? Colors.orange : Colors.blue;
+    return metode == "resep" ? Color(0xFF7EC8E3) : Color(0xFF98E2C6);
   }
 
   String _metodeText(String metode) {
@@ -79,7 +79,7 @@ class DetailPembelianPage extends StatelessWidget {
                       ),
                       child: Text(
                         _metodeText(transaksi["metode"]),
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.black),
                       ),
                     ),
                   ],
