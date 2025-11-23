@@ -1,6 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-
 import 'package:projectuts/presentation/detail_pembelian_page.dart';
 import 'package:projectuts/presentation/edit_transaksi_page.dart';
 import 'package:projectuts/presentation/home_page.dart';

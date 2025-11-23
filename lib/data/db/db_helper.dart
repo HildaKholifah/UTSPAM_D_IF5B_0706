@@ -60,30 +60,30 @@ class DBHelper {
     ''');
 
     await db.execute('''
-  CREATE TABLE pembelian (
-    columnId INTEGER PRIMARY KEY AUTOINCREMENT,
-    columnNamaPembeli TEXT NOT NULL,
-    columnNamaObat TEXT NOT NULL,
-    columnJumlah INTEGER NOT NULL,
-    columnMetode TEXT NOT NULL,
-    columnNomorResep INTEGER,
-    columnGambarResep TEXT,
-    columnTanggal TEXT NOT NULL
-  )
-''');
+      CREATE TABLE pembelian (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nama TEXT NOT NULL,
+        kategori TEXT NOT NULL,
+        namaPembeli TEXT,
+        jumlah INTEGER NOT NULL,
+        harga INTEGER NOT NULL,
+        total INTEGER NOT NULL,
+        metode TEXT NOT NULL,
+        nomorResep TEXT,
+        gambarResep TEXT,
+        tanggal TEXT NOT NULL
+      )
+    ''');
   }
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
-      await db.execute('''
-        CREATE TABLE pembelian(
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          nama_obat TEXT NOT NULL,
-          harga INTEGER NOT NULL,
-          tanggal TEXT NOT NULL,
-          gambar TEXT
-        )
-      ''');
+      await db.execute("ALTER TABLE pembelian ADD COLUMN kategori TEXT;");
+      await db.execute("ALTER TABLE pembelian ADD COLUMN namaPembeli TEXT;");
+      await db.execute("ALTER TABLE pembelian ADD COLUMN total INTEGER;");
+      await db.execute("ALTER TABLE pembelian ADD COLUMN metode TEXT;");
+      await db.execute("ALTER TABLE pembelian ADD COLUMN nomorResep TEXT;");
+      await db.execute("ALTER TABLE pembelian ADD COLUMN gambarResep TEXT;");
     }
   }
 }

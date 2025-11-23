@@ -64,7 +64,11 @@ class PembelianObatPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Icon(obat['gambar'], size: 50, color: Colors.teal),
+                    Image.asset(
+                      obat['gambar'],
+                      height: 70,
+                      fit: BoxFit.contain,
+                    ),
                     Text(
                       obat['nama'],
                       textAlign: TextAlign.center,

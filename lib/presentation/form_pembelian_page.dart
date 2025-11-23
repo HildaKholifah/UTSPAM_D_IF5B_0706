@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:projectuts/data/model/pembelian.dart';
+import 'package:projectuts/data/repository/app_repository.dart';
 import 'package:projectuts/presentation/riwayat_pembelian_page.dart';
 
 class FormPembelianPage extends StatefulWidget {
@@ -59,7 +61,7 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
     }
   }
 
-  void _validasiDanSimpan() {
+  void _validasiDanSimpan() async {
     if (!_formKey.currentState!.validate()) return;
 
     if (metodePembelian == "resep" && fotoResep == null) {
@@ -69,19 +71,20 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
       return;
     }
 
-    // TODO: Simpan ke SQLite di sini nanti
-    final transaksi = {
-      "nama": widget.nama,
-      "kategori": widget.kategori,
-      "harga": widget.harga,
-      "namaPembeli": _namaPembeliCtr.text,
-      "jumlah": int.parse(_jumlahCtr.text),
-      "total": totalHarga,
-      "metode": metodePembelian == "resep" ? "Resep Dokter" : "Langsung",
-      "nomorResep": metodePembelian == "resep" ? _nomorResepCtr.text : "-",
-      "fotoResep": fotoResep,
-      "tanggal": DateTime.now().toString().substring(0, 10),
-    };
+    Pembelian pembelian = Pembelian(
+      nama: widget.nama,
+      kategori: widget.kategori,
+      namaPembeli: _namaPembeliCtr.text,
+      jumlah: int.parse(_jumlahCtr.text),
+      harga: widget.harga,
+      total: totalHarga,
+      tanggal: DateTime.now().toString().substring(0, 10),
+      metode: metodePembelian == "resep" ? "Resep Dokter" : "Langsung",
+      nomorResep: metodePembelian == "resep" ? _nomorResepCtr.text : "",
+      gambarResep: fotoResep?.path ?? "",
+    );
+
+    await AppRepository().tambahPembelian(pembelian);
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Pembelian berhasil disimpan!")),
@@ -90,10 +93,7 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
-        builder: (_) => RiwayatPembelianPage(
-          transaksiBaru: transaksi,
-          username: widget.username,
-        ),
+        builder: (_) => RiwayatPembelianPage(username: widget.username),
       ),
       (route) => false,
     );
