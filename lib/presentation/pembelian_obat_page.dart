@@ -11,25 +11,25 @@ class PembelianObatPage extends StatelessWidget {
       "nama": "Paracetamol",
       "kategori": "Pereda Demam",
       "harga": 10000,
-      "gambar": Icons.medication,
+      "gambar": "assets/obat/Paracetamol.png",
     },
     {
       "nama": "Amoxicillin",
       "kategori": "Antibiotik",
       "harga": 25000,
-      "gambar": Icons.medical_services,
+      "gambar": "assets/obat/Amoxicillin.png",
     },
     {
       "nama": "Betadine",
       "kategori": "Antiseptik",
       "harga": 15000,
-      "gambar": Icons.healing,
+      "gambar": "assets/obat/Betadine.png",
     },
     {
       "nama": "Oralit",
       "kategori": "Diare",
       "harga": 5000,
-      "gambar": Icons.local_drink,
+      "gambar": "assets/obat/Oralit.png",
     },
   ];
 

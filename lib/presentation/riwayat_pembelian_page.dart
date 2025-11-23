@@ -20,6 +20,9 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
     {
       "nama": "Paracetamol",
       "kategori": "Pereda Demam",
+      "namaPembeli": "Hilda",
+      "jumlah": 2,
+      "harga": 10000,
       "total": 20000,
       "gambar": "assets/obat/Paracetamol.png",
       "metode": "langsung",
@@ -28,10 +31,14 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
     {
       "nama": "Amoxicillin",
       "kategori": "Antibiotik",
+      "namaPembeli": "Rahma",
+      "jumlah": 1,
+      "harga": 25000,
       "total": 25000,
       "gambar": "assets/obat/Amoxicillin.png",
       "metode": "resep",
       "tanggal": "21 Nov 2025",
+      "nomorResep": 123456,
     },
   ];
 
@@ -51,7 +58,7 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF3DB4DF),
+        backgroundColor: Colors.teal,
         title: const Text("Riwayat Pembelian"),
         centerTitle: true,
         leading: IconButton(
@@ -80,11 +87,11 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
             margin: const EdgeInsets.only(bottom: 12),
             child: ListTile(
               leading: ClipRRect(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(4),
                 child: Image.asset(
                   data["gambar"],
-                  width: 50,
-                  height: 50,
+                  width: 35,
+                  height: 35,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -133,7 +140,7 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
-                  fontSize: 15,
+                  fontSize: 14,
                 ),
               ),
 
