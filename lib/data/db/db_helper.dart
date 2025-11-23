@@ -16,11 +16,7 @@ class DBHelper {
 
   Future<Database> _initDB() async {
     String path = join(await getDatabasesPath(), "mediklik.db");
-    return await openDatabase(
-      path,
-      version: 1,
-      onCreate: _onCreate,
-    );
+    return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
   Future _onCreate(Database db, int version) async {
@@ -34,6 +30,15 @@ class DBHelper {
         username TEXT NOT NULL,
         password TEXT NOT NULL,
         gender TEXT NOT NULL
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE obat(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nama TEXT NOT NULL,
+        kategori TEXT NOT NULL,
+        harga INTEGER NOT NULL
       )
     ''');
   }
