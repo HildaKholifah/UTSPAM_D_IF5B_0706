@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:projectuts/presentation/form_pembelian_page.dart';
 import 'package:projectuts/presentation/login_page.dart';
 import 'package:projectuts/presentation/pembelian_obat_page.dart';
+import 'package:projectuts/presentation/profil_pengguna_page.dart';
 import 'package:projectuts/presentation/riwayat_pembelian_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -89,7 +90,10 @@ class HomePage extends StatelessWidget {
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => HomePage(username: username)),
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ProfilPenggunaPage(username: username),
+                      ),
                     );
                   },
                 ),
