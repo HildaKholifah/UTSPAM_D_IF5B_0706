@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projectuts/data/repository/user_repository.dart';
+import 'package:projectuts/data/repository/app_repository.dart';
 import 'package:projectuts/presentation/home_page.dart';
 import 'package:projectuts/presentation/register_page.dart';
 
@@ -16,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   final _passCtr = TextEditingController();
   bool isObscure = true;
 
-  final _userRepository = UserRepository();
+  final _userRepository = AppRepository();
 
   @override
   Widget build(BuildContext context) {

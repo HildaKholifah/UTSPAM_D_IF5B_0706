@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projectuts/data/repository/user_repository.dart';
+import 'package:projectuts/data/repository/app_repository.dart';
 import 'package:projectuts/presentation/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -23,7 +23,7 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _isObscure1 = true;
   bool _isObscure2 = true;
 
-  final _userRepository = UserRepository();
+  final _userRepository = AppRepository();
 
   @override
   Widget build(BuildContext context) {

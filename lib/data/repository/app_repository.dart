@@ -1,8 +1,11 @@
+import 'package:projectuts/data/db/obat_dao.dart';
 import 'package:projectuts/data/db/user_dao.dart';
+import 'package:projectuts/data/model/obat.dart';
 import 'package:projectuts/data/model/user.dart';
 
-class UserRepository {
+class AppRepository {
   final _userDao = UserDao();
+  final _obatDao = ObatDao();
 
   Future<void> register({
     required String nama,
@@ -39,4 +42,16 @@ class UserRepository {
     User? user = await _userDao.getUserByEmail(email);
     return user?.username;
   }
+
+  Future<int> tambahObat(Obat obat) =>
+      _obatDao.insertObat(obat);
+
+  Future<List<Obat>> getAllObat() =>
+      _obatDao.getAllObat();
+
+  Future<int> updateObat(Obat obat) =>
+      _obatDao.updateObat(obat);
+
+  Future<int> deleteObat(int id) =>
+      _obatDao.deleteObat(id);
 }
