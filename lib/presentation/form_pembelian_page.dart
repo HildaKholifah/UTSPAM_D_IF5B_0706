@@ -32,7 +32,7 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
   final _nomorResepCtr = TextEditingController();
   final ImagePicker picker = ImagePicker();
   bool _pilihGambar = false;
-  String? metodePembelian = "langsung"; // default
+  String metodePembelian = "langsung";
   int totalHarga = 0;
   File? fotoResep;
 
@@ -92,7 +92,7 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
     }
 
     Pembelian pembelian = Pembelian(
-      namaObat: widget.nama, //error
+      namaObat: widget.nama,
       kategori: widget.kategori,
       namaPembeli: widget.username,
       jumlah: int.parse(_jumlahCtr.text),
@@ -142,132 +142,157 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF3DB4DF),
-        title: Text("Pembelian Obat - ${widget.nama}"),
-        // centerTitle: true,
+        backgroundColor: Color(0xFF0077B6),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          "Pembelian Obat - ${widget.nama}",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
-
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Nama Obat: ${widget.nama}",
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                Text(
-                  "Kategori: ${widget.kategori}",
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-
-                Text(
-                  "Harga: Rp ${widget.harga}",
-                  style: const TextStyle(fontSize: 14, color: Colors.black87),
-                ),
-
-                const SizedBox(height: 20),
-
-                TextFormField(
-                  controller: _namaPembeliCtr,
-                  validator: (v) => v!.isEmpty ? "Nama wajib diisi" : null,
-                  decoration: const InputDecoration(
-                    label: Text("Nama Pembeli"),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-
-                const SizedBox(height: 12),
-
-                TextFormField(
-                  controller: _jumlahCtr,
-                  validator: (v) {
-                    if (v!.isEmpty) return "Jumlah wajib diisi";
-                    if (int.tryParse(v) == null || int.parse(v) <= 0) {
-                      return "Jumlah harus angka positif";
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    label: Text("Jumlah Pembelian"),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-
-                const SizedBox(height: 12),
-
-                TextFormField(
-                  controller: _catatanCtr,
-                  decoration: const InputDecoration(
-                    label: Text("Catatan (Opsional)"),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-                const Text(
-                  "Metode Pembelian",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-
-                Row(
+          child: Card(
+            elevation: 6,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            shadowColor: Colors.black26,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: RadioListTile(
-                        title: const Text("Langsung"),
-                        value: "langsung",
-                        groupValue: metodePembelian,
-                        onChanged: (val) {
-                          setState(() => metodePembelian = val);
-                        },
-                      ),
+                    // Info Obat
+                    Row(
+                      children: [
+                        Image.asset(
+                          _getGambarDummy(widget.nama),
+                          width: 70,
+                          height: 70,
+                          fit: BoxFit.contain,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.nama,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                widget.kategori,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Text(
+                                "Rp ${widget.harga}",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    Expanded(
-                      child: RadioListTile(
-                        title: const Text("Resep Dokter"),
-                        value: "resep",
-                        groupValue: metodePembelian,
-                        onChanged: (val) {
-                          setState(() => metodePembelian = val);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                    const SizedBox(height: 20),
 
-                if (metodePembelian == "resep")
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 10),
-                      TextFormField(
-                        controller: _nomorResepCtr,
+                    _buildTextField(
+                      _namaPembeliCtr,
+                      "Nama Pembeli",
+                      validator: (v) {
+                        if (v == null || v.isEmpty) return "Nama wajib diisi";
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                    _buildTextField(
+                      _jumlahCtr,
+                      "Jumlah Pembelian",
+                      keyboardType: TextInputType.number,
+                      validator: (v) {
+                        if (v == null || v.isEmpty) return "Jumlah wajib diisi";
+                        if (int.tryParse(v) == null || int.parse(v) <= 0) {
+                          return "Jumlah harus angka positif";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                    _buildTextField(_catatanCtr, "Catatan (Opsional)"),
+                    const SizedBox(height: 20),
+
+                    // Metode Pembelian
+                    Text(
+                      "Metode Pembelian",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () =>
+                                setState(() => metodePembelian = "langsung"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: metodePembelian == "langsung"
+                                  ? Color(0xFF0077B6)
+                                  : Colors.grey.shade300,
+                              foregroundColor: metodePembelian == "langsung"
+                                  ? Colors.white
+                                  : Colors.black87,
+                            ),
+                            child: const Text("Langsung"),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () =>
+                                setState(() => metodePembelian = "resep"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: metodePembelian == "resep"
+                                  ? Color(0xFF0077B6)
+                                  : Colors.grey.shade300,
+                              foregroundColor: metodePembelian == "resep"
+                                  ? Colors.white
+                                  : Colors.black87,
+                            ),
+                            child: const Text("Resep Dokter"),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    if (metodePembelian == "resep") ...[
+                      const SizedBox(height: 16),
+                      _buildTextField(
+                        _nomorResepCtr,
+                        "Nomor Resep Dokter",
                         validator: (v) {
-                          if (metodePembelian == "resep") {
-                            if (v!.isEmpty) return "Nomor resep wajib diisi";
-                            if (v.length < 6)
-                              return "Nomor resep minimal 6 karakter";
-                            if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d)').hasMatch(v))
-                              return "Harus kombinasi huruf & angka";
-                          }
+                          if (v == null || v.isEmpty)
+                            return "Nomor resep wajib diisi";
+                          if (v.length < 6)
+                            return "Nomor resep minimal 6 karakter";
+                          if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d)').hasMatch(v))
+                            return "Harus kombinasi huruf & angka";
                           return null;
                         },
-                        decoration: const InputDecoration(
-                          label: Text("Nomor Resep Dokter"),
-                          border: OutlineInputBorder(),
-                        ),
                       ),
-
-                      const SizedBox(height: 10),
-
+                      const SizedBox(height: 12),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -283,49 +308,87 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
                           ),
                         ],
                       ),
-
-                      const SizedBox(height: 10),
-
                       if (fotoResep != null)
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.file(
-                            fotoResep!,
-                            height: 120,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.file(
+                              fotoResep!,
+                              height: 140,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                     ],
-                  ),
 
-                const SizedBox(height: 20),
-                Text(
-                  "Total Harga: Rp$totalHarga",
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.teal,
-                  ),
-                ),
-
-                const SizedBox(height: 25),
-
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: _validasiDanSimpan,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal,
-                      foregroundColor: Colors.white,
+                    const SizedBox(height: 20),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.blue.shade50,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        "Total Harga: Rp$totalHarga",
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF0077B6),
+                        ),
+                      ),
                     ),
-                    child: const Text("Beli Obat"),
-                  ),
+
+                    const SizedBox(height: 25),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: _validasiDanSimpan,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF0077B6),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          "Beli Obat",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(
+    TextEditingController controller,
+    String label, {
+    String? Function(String?)? validator,
+    TextInputType? keyboardType,
+  }) {
+    return TextFormField(
+      controller: controller,
+      validator: validator,
+      keyboardType: keyboardType,
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 14,
         ),
       ),
     );

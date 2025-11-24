@@ -14,6 +14,7 @@ class ProfilPenggunaPage extends StatefulWidget {
 class _ProfilPenggunaPageState extends State<ProfilPenggunaPage> {
   User? user;
   bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
@@ -32,49 +33,85 @@ class _ProfilPenggunaPageState extends State<ProfilPenggunaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Profil Pengguna"),
-        backgroundColor: Color.fromARGB(255, 61, 180, 223)
+        backgroundColor: Color(0xFF0077B6),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: const Text(
+          "Profil Pengguna",
+          style: TextStyle(color: Colors.white),
+        ),
+        elevation: 2,
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator()) // UPDATE: loading
+          ? const Center(child: CircularProgressIndicator())
           : user == null
-          ? const Center(
-              child: Text("Pengguna tidak ditemukan"),
-            ) // UPDATE: jika user null
-          : Padding(
+          ? const Center(child: Text("Pengguna tidak ditemukan"))
+          : SingleChildScrollView(
               padding: const EdgeInsets.all(16),
-              child: Card(
-                elevation: 3,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _infoRow("Nama", user!.nama),
-                      _infoRow("Email", user!.email),
-                      _infoRow("Telepon", user!.telepon),
-                      _infoRow("Alamat", user!.alamat),
-                      _infoRow("Username", user!.username),
-                      _infoRow("Gender", user!.gender),
-                    ],
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 57,
+                    backgroundColor: Color(0xFF0077B6),
+                    child: Text(
+                      user!.nama.isNotEmpty ? user!.nama[0].toUpperCase() : "?",
+                      style: const TextStyle(
+                        fontSize: 40,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 16),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    elevation: 4,
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          _infoRow(Icons.person, "Nama", user!.nama),
+                          _infoRow(Icons.email, "Email", user!.email),
+                          _infoRow(Icons.phone, "Telepon", user!.telepon),
+                          _infoRow(Icons.location_city, "Alamat", user!.alamat),
+                          _infoRow(
+                            Icons.account_circle,
+                            "Username",
+                            user!.username,
+                          ),
+                          _infoRow(Icons.wc, "Gender", user!.gender),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
     );
   }
 
-  Widget _infoRow(String title, String value) {
+  Widget _infoRow(IconData icon, String title, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-          Flexible(child: Text(value, textAlign: TextAlign.right)),
+          Icon(icon, color: Color(0xFF0077B6)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              textAlign: TextAlign.right,
+              style: const TextStyle(fontSize: 16, color: Colors.black87),
+            ),
+          ),
         ],
       ),
     );

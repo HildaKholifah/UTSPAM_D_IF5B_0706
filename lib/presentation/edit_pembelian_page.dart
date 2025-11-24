@@ -1,12 +1,11 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projectuts/data/model/pembelian.dart';
 
 class EditTransaksiPage extends StatefulWidget {
   final Pembelian transaksi;
-  final Function(Pembelian) onUpdate; // callback untuk update transaksi
+  final Function(Pembelian) onUpdate;
 
   const EditTransaksiPage({
     super.key,
@@ -34,7 +33,6 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
       text: widget.transaksi.jumlah.toString(),
     );
     _catatanCtr = TextEditingController(text: widget.transaksi.catatan ?? '');
-
     _nomorResepCtr = TextEditingController(
       text: widget.transaksi.nomorResep ?? '',
     );
@@ -42,6 +40,7 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
         widget.transaksi.metode?.toLowerCase().contains("resep") == true
         ? "resep"
         : "langsung";
+
     if (widget.transaksi.gambarResep != null &&
         File(widget.transaksi.gambarResep!).existsSync()) {
       gambarResep = File(widget.transaksi.gambarResep!);
@@ -64,15 +63,17 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
       source: dariKamera ? ImageSource.camera : ImageSource.gallery,
       imageQuality: 70,
     );
+    if (file != null) setState(() => gambarResep = File(file.path));
+  }
 
-    if (file != null) {
-      setState(() => gambarResep = File(file.path));
-    }
+  Color _badgeColor(String metode) {
+    if (metode == "Resep Dokter") return Color(0xFF7EC8E3);
+    if (metode == "Langsung") return Color(0xFF90BE6D);
+    return Colors.grey;
   }
 
   void _validasiDanUpdate() {
     if (!_formKey.currentState!.validate()) return;
-
     if (metodePembelian == "resep" && gambarResep == null) {
       _showAlert(
         "Foto resep wajib diunggah untuk pembelian dengan resep dokter!",
@@ -102,8 +103,7 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
     );
 
     widget.onUpdate(updatedTransaksi);
-
-    Navigator.pop(context); // kembali ke detail transaksi
+    Navigator.pop(context);
   }
 
   void _showAlert(String pesan) {
@@ -125,7 +125,14 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Edit Transaksi"), centerTitle: true),
+      appBar: AppBar(
+        backgroundColor: Color(0xFF0077B6),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: const Text(
+          "Edit Pembelian",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -133,6 +140,20 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (widget.transaksi.gambarObat != null)
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      widget.transaksi.gambarObat!,
+                      width: 120,
+                      height: 120,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 16),
+
               Text(
                 "Nama Obat: ${widget.transaksi.namaObat}",
                 style: const TextStyle(
@@ -142,23 +163,24 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
               ),
               Text(
                 "Kategori: ${widget.transaksi.kategori}",
-                style: const TextStyle(fontSize: 14, color: Colors.grey),
+                style: const TextStyle(color: Colors.grey),
               ),
               Text(
                 "Harga Satuan: Rp${widget.transaksi.harga}",
-                style: const TextStyle(fontSize: 14, color: Colors.black87),
+                style: const TextStyle(color: Colors.black87),
               ),
               const SizedBox(height: 20),
 
+              // Jumlah
               TextFormField(
                 controller: _jumlahCtr,
+                keyboardType: TextInputType.number,
                 validator: (v) {
                   if (v!.isEmpty) return "Jumlah wajib diisi";
                   if (int.tryParse(v) == null || int.parse(v) <= 0)
                     return "Jumlah harus angka positif";
                   return null;
                 },
-                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   label: Text("Jumlah Pembelian"),
                   border: OutlineInputBorder(),
@@ -166,6 +188,7 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
               ),
               const SizedBox(height: 12),
 
+              // Catatan
               TextFormField(
                 controller: _catatanCtr,
                 decoration: const InputDecoration(
@@ -186,9 +209,7 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
                       title: const Text("Langsung"),
                       value: "langsung",
                       groupValue: metodePembelian,
-                      onChanged: (val) {
-                        setState(() => metodePembelian = val);
-                      },
+                      onChanged: (val) => setState(() => metodePembelian = val),
                     ),
                   ),
                   Expanded(
@@ -196,9 +217,7 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
                       title: const Text("Resep Dokter"),
                       value: "resep",
                       groupValue: metodePembelian,
-                      onChanged: (val) {
-                        setState(() => metodePembelian = val);
-                      },
+                      onChanged: (val) => setState(() => metodePembelian = val),
                     ),
                   ),
                 ],
@@ -216,9 +235,8 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
                           if (v!.isEmpty) return "Nomor resep wajib diisi";
                           if (v.length < 6)
                             return "Nomor resep minimal 6 karakter";
-                          if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d)').hasMatch(v)) {
+                          if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d)').hasMatch(v))
                             return "Harus kombinasi huruf & angka";
-                          }
                         }
                         return null;
                       },
@@ -228,7 +246,6 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -244,15 +261,17 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
                         ),
                       ],
                     ),
-
                     if (gambarResep != null)
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.file(
-                          gambarResep!,
-                          height: 120,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.file(
+                            gambarResep!,
+                            height: 120,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                   ],
@@ -264,25 +283,43 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.teal,
+                  color: Color(0xFF0077B6),
                 ),
               ),
-
               const SizedBox(height: 25),
+
               Row(
                 children: [
                   Expanded(
                     child: ElevatedButton(
                       onPressed: _validasiDanUpdate,
-                      child: const Text("Simpan"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF0077B6),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text(
+                        "Simpan",
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: () =>
-                          Navigator.pop(context), // cancel kembali ke detail
-                      child: const Text("Batal"),
+                      onPressed: () => Navigator.pop(context),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text(
+                        "Batal",
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
                   ),
                 ],

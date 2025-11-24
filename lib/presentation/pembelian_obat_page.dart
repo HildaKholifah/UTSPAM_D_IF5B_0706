@@ -37,76 +37,123 @@ class PembelianObatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF3DB4DF),
-        title: const Text("Daftar Obat"),
-        // centerTitle: true,
+        backgroundColor: Color(0xFF0077B6),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: const Text(
+          "Daftar Obat",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        elevation: 4,
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: GridView.builder(
           itemCount: dataObat.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Grid 2 kolom
-            childAspectRatio: 0.75,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
+            crossAxisCount: 2,
+            childAspectRatio: 0.7,
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
           ),
           itemBuilder: (context, index) {
             var obat = dataObat[index];
 
             return Card(
-              elevation: 4,
+              elevation: 6,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(16),
               ),
+              shadowColor: Colors.black26,
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(12.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Image.asset(
-                      obat['gambar'],
-                      height: 70,
-                      fit: BoxFit.contain,
+                    Container(
+                      height: 90,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 4,
+                            offset: Offset(2, 2),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.asset(obat['gambar'], fit: BoxFit.contain),
+                      ),
                     ),
+
+                    const SizedBox(height: 8),
+
                     Text(
                       obat['nama'],
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
+                        color: Colors.black87,
                       ),
                     ),
+
                     Text(
                       obat['kategori'],
-                      style: const TextStyle(color: Colors.grey),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.grey.shade600,
+                        fontSize: 13,
+                      ),
                     ),
+
+                    const SizedBox(height: 6),
+
                     Text(
                       "Rp${obat['harga']}",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
+                        fontSize: 14,
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => FormPembelianPage(
-                              nama: obat['nama'],
-                              kategori: obat['kategori'],
-                              harga: obat['harga'],
-                              username: username,
+
+                    const SizedBox(height: 6),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FormPembelianPage(
+                                nama: obat['nama'],
+                                kategori: obat['kategori'],
+                                harga: obat['harga'],
+                                username: username,
+                              ),
                             ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.teal,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.teal,
-                        foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                        ),
+                        child: const Text(
+                          "Beli",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
-                      child: const Text("Beli"),
                     ),
                   ],
                 ),

@@ -12,65 +12,70 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 61, 180, 223),
-        title: Text('MediKlik'),
+        elevation: 6,
+        backgroundColor: Color(0xFF0077B6),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+        ),
+        title: const Text(
+          "MediKlik",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
         centerTitle: true,
-        leading: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: ClipOval(
-            child: Image.asset(
-              'assets/presentation/Logo MediKlik.png',
-              fit: BoxFit.contain,
-            ),
+        leading: Container(
+          padding: EdgeInsets.all(8),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(50),
+            child: Image.asset("assets/presentation/Logo MediKlik.png"),
           ),
         ),
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Halo, $username!",
+              "Halo, $username 👋",
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 26,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                color: Color(0xFF0077B6),
               ),
             ),
-
             const SizedBox(height: 20),
 
-            // MENU 4 FITUR UTAMA
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _menuButton(
+                _menuCard(
                   icon: Icons.shopping_cart,
-                  title: "Beli Obat",
-                  color: Color(0xFF98E2C6),
+                  label: "Beli Obat",
+                  colors: [Color(0xFF00B4D8), Color(0xFF0077B6)],
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            PembelianObatPage(username: username),
+                        builder: (_) => PembelianObatPage(username: username),
                       ),
                     );
                   },
                 ),
-                _menuButton(
+                _menuCard(
                   icon: Icons.history,
-                  title: "Riwayat",
-                  color: Color(0xFF7EC8E3),
+                  label: "Riwayat",
+                  colors: [Color(0xFF90BE6D), Color(0xFF57A773)],
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
+                        builder: (_) =>
                             RiwayatPembelianPage(username: username),
                       ),
                     );
@@ -78,30 +83,27 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-
-            const SizedBox(height: 12),
-
+            const SizedBox(height: 14),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _menuButton(
+                _menuCard(
                   icon: Icons.person,
-                  title: "Profil",
-                  color: Color(0xFF7EC8E3),
+                  label: "Profil",
+                  colors: [Color(0xFF577590), Color(0xFF34495E)],
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            ProfilPenggunaPage(username: username),
+                        builder: (_) => ProfilPenggunaPage(username: username),
                       ),
                     );
                   },
                 ),
-                _menuButton(
+                _menuCard(
                   icon: Icons.logout,
-                  title: "Logout",
-                  color: Colors.redAccent,
+                  label: "Logout",
+                  colors: [Colors.redAccent, Colors.red],
                   onTap: () {
                     Navigator.pushAndRemoveUntil(
                       context,
@@ -114,22 +116,20 @@ class HomePage extends StatelessWidget {
             ),
 
             const SizedBox(height: 25),
-
             const Text(
               "Rekomendasi Obat",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
             ),
-
             const SizedBox(height: 10),
 
             Expanded(
               child: ListView(
                 children: [
-                  _itemObat(
+                  _obatCard(
+                    gambar: "assets/obat/Paracetamol.png",
                     nama: "Paracetamol",
                     kategori: "Pereda Demam",
-                    harga: "Rp10000",
-                    gambar: "assets/obat/Paracetamol.png",
+                    harga: "Rp10.000",
                     onTap: () {
                       Navigator.push(
                         context,
@@ -144,11 +144,11 @@ class HomePage extends StatelessWidget {
                       );
                     },
                   ),
-                  _itemObat(
+                  _obatCard(
+                    gambar: "assets/obat/Amoxicillin.png",
                     nama: "Amoxicillin",
                     kategori: "Antibiotik",
-                    harga: "Rp25000",
-                    gambar: "assets/obat/Amoxicillin.png",
+                    harga: "Rp25.000",
                     onTap: () {
                       Navigator.push(
                         context,
@@ -163,11 +163,11 @@ class HomePage extends StatelessWidget {
                       );
                     },
                   ),
-                  _itemObat(
+                  _obatCard(
+                    gambar: "assets/obat/Betadine.png",
                     nama: "Betadine",
                     kategori: "Antiseptik",
-                    harga: "Rp15000",
-                    gambar: "assets/obat/Betadine.png",
+                    harga: "Rp15.000",
                     onTap: () {
                       Navigator.push(
                         context,
@@ -191,32 +191,43 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _menuButton({
+  Widget _menuCard({
     required IconData icon,
-    required String title,
-    required Color color,
+    required String label,
+    required List<Color> colors,
     required VoidCallback onTap,
   }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 145,
-        height: 90,
+        width: 150,
+        height: 100,
         decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(15),
+          gradient: LinearGradient(
+            colors: colors,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 8,
+              offset: Offset(2, 4),
+            ),
+          ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 35, color: Colors.white),
-            const SizedBox(height: 8),
+            Icon(icon, size: 38, color: Colors.white),
+            SizedBox(height: 10),
             Text(
-              title,
-              style: const TextStyle(
+              label,
+              style: TextStyle(
                 color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                fontSize: 16,
               ),
             ),
           ],
@@ -225,36 +236,52 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _itemObat({
+  Widget _obatCard({
+    required String gambar,
     required String nama,
     required String kategori,
     required String harga,
-    required String gambar,
     required VoidCallback onTap,
   }) {
     return Card(
-      elevation: 2,
+      elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      margin: EdgeInsets.only(bottom: 14),
       child: ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         leading: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: Image.asset(gambar, width: 50, height: 50, fit: BoxFit.cover),
+          borderRadius: BorderRadius.circular(10),
+          child: Image.asset(gambar, width: 60, height: 60, fit: BoxFit.cover),
         ),
-        title: Text(nama, style: TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
+        title: Text(
+          nama,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        subtitle: Text(kategori),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(kategori),
-            Text(harga, style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              harga,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            ),
+            const SizedBox(height: 6),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                minimumSize: Size(60, 30),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              icon: Icon(Icons.add_shopping_cart, size: 16),
+              label: Text("Beli", style: TextStyle(fontSize: 13)),
+              onPressed: onTap,
+            ),
           ],
-        ),
-        trailing: ElevatedButton(
-          onPressed: onTap,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.teal,
-            foregroundColor: Colors.white,
-          ),
-          child: const Text("Beli"),
         ),
       ),
     );

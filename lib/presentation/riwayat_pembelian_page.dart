@@ -17,13 +17,18 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
   List<Pembelian> riwayat = [];
   final AppRepository _repository = AppRepository();
 
-  Color _badgeColor(String metode) {
-    return metode == "Resep Dokter" ? Color(0xFF7EC8E3) : Color(0xFF98E2C6);
+  Color _statusColor(String status) {
+    switch (status.toLowerCase()) {
+      case "selesai":
+        return Colors.green.shade300;
+      case "pending":
+        return Colors.orange.shade300;
+      default:
+        return Colors.grey.shade300;
+    }
   }
 
-  String _metodeText(String metode) {
-    return metode; 
-  }
+  String _metodeText(String metode) => metode;
 
   @override
   void initState() {
@@ -33,18 +38,21 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
 
   Future<void> _loadRiwayat() async {
     final data = await _repository.getRiwayatPembelian(widget.username);
-      setState(() {
-        riwayat = data; 
-      });
+    setState(() {
+      riwayat = data;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 61, 180, 223),
-        title: const Text("Riwayat Pembelian"),
-        // centerTitle: true,
+        backgroundColor: Color(0xFF0077B6),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: const Text(
+          "Riwayat Pembelian",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -63,103 +71,120 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
         itemBuilder: (context, index) {
           var data = riwayat[index];
 
-          return Card(
-            elevation: 3,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            margin: const EdgeInsets.only(bottom: 12),
-            child: ListTile(
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(4),
-                child: Image.asset(
-                  data.gambarObat ?? 'asset/obat/default.png',
-                  width: 35,
-                  height: 35,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              title: Text(
-                data.namaObat,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(data.kategori),
-                  Text("Pembeli: ${data.namaPembeli ?? '-'}"),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 3,
-                        ),
-                        decoration: BoxDecoration(
-                          color: _badgeColor(data.metode),
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text(
-                          _metodeText(data.metode),
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 11,
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => DetailPembelianPage(
+                    transaksi: data,
+                    onDelete: () {
+                      setState(() => riwayat.removeAt(index));
+                      Navigator.pop(context);
+                    },
+                    onEdit: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => EditTransaksiPage(
+                            transaksi: data,
+                            onUpdate: (updated) {
+                              setState(() => riwayat[index] = updated);
+                              Navigator.pop(context);
+                            },
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        data.tanggal,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
-                ],
-              ),
-              trailing: Text(
-                "Rp ${data.total}",
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 14,
                 ),
+              );
+            },
+            child: Card(
+              elevation: 4,
+              shadowColor: Colors.black26,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
               ),
+              margin: const EdgeInsets.only(bottom: 14),
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.asset(
+                        data.gambarObat ?? 'assets/obat/default.png',
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
 
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => DetailPembelianPage(
-                      transaksi: data,
-                      onDelete: () {
-                        // hapus dari list
-                        setState(() => riwayat.removeAt(index));
-                        Navigator.pop(context);
-                      },
-                      onEdit: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => EditTransaksiPage(
-                              transaksi: data,
-                              onUpdate: (updated) {
-                                setState(() {
-                                  riwayat[index] = updated;
-                                });
-                                Navigator.pop(context);
-                              },
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            data.namaObat,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
                           ),
-                        );
-                      },
+                          const SizedBox(height: 4),
+                          Text(
+                            data.kategori,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 13,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            "Pembeli: ${data.namaPembeli ?? '-'}",
+                            style: const TextStyle(fontSize: 13),
+                          ),
+                          const SizedBox(height: 6),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          "Rp ${data.total}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: _statusColor(data.status),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            data.status,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
           );
         },

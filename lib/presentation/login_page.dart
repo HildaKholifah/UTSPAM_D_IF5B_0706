@@ -168,6 +168,20 @@ class _LoginPageState extends State<LoginPage> {
                               if (success) {
                                 String? username = await _userRepository
                                     .getUsernameByEmail(_emailCtr.text);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      "Register berhasil. Silahkan login!",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    backgroundColor: Color.fromARGB(
+                                      255,
+                                      75,
+                                      217,
+                                      129,
+                                    ),
+                                  ),
+                                );
                                 if (username != null) {
                                   Navigator.pushAndRemoveUntil(
                                     context,
