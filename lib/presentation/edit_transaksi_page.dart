@@ -34,6 +34,7 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
       text: widget.transaksi.jumlah.toString(),
     );
     _catatanCtr = TextEditingController(text: widget.transaksi.catatan ?? '');
+    
     _nomorResepCtr = TextEditingController(
       text: widget.transaksi.nomorResep ?? '',
     );

@@ -26,12 +26,12 @@ class FormPembelianPage extends StatefulWidget {
 
 class _FormPembelianPageState extends State<FormPembelianPage> {
   final _formKey = GlobalKey<FormState>();
-
   final _namaPembeliCtr = TextEditingController();
   final _jumlahCtr = TextEditingController();
   final _catatanCtr = TextEditingController();
   final _nomorResepCtr = TextEditingController();
-
+  final ImagePicker picker = ImagePicker();
+  bool _pilihGambar = false;
   String? metodePembelian = "langsung"; // default
   int totalHarga = 0;
   File? fotoResep;
@@ -59,15 +59,25 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
     });
   }
 
-  Future<void> _pilihGambar(bool dariKamera) async {
-    final picker = ImagePicker();
-    XFile? file = await picker.pickImage(
-      source: dariKamera ? ImageSource.camera : ImageSource.gallery,
-      imageQuality: 70,
-    );
+  Future<void> pilihGambar({required bool dariKamera}) async {
+    if (_pilihGambar) return;
+    _pilihGambar = true;
 
-    if (file != null) {
-      setState(() => fotoResep = File(file.path));
+    try {
+      XFile? file = await picker.pickImage(
+        source: dariKamera ? ImageSource.camera : ImageSource.gallery,
+        imageQuality: 70,
+      );
+
+      if (file != null) {
+        setState(() {
+          fotoResep = File(file.path);
+        });
+      }
+    } catch (e) {
+      print("Gagal mengambil gambar: $e");
+    } finally {
+      _pilihGambar = false;
     }
   }
 
@@ -81,10 +91,6 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
       return;
     }
 
-    String metodeDisplay = metodePembelian == "resep"
-        ? "Resep Dokter"
-        : "Langsung";
-
     Pembelian pembelian = Pembelian(
       nama: widget.nama,
       kategori: widget.kategori,
@@ -94,8 +100,8 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
       total: totalHarga,
       tanggal: DateTime.now().toString().substring(0, 10),
       metode: metodePembelian == "resep" ? "Resep Dokter" : "Langsung",
-      nomorResep: metodeDisplay,
-      gambarResep: fotoResep?.path, //error
+      nomorResep: metodePembelian == "resep" ? _nomorResepCtr.text : null,
+      gambarResep: fotoResep?.path, 
       gambarObat: _getGambarDummy(widget.nama),
     );
 
@@ -245,9 +251,10 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
                         validator: (v) {
                           if (metodePembelian == "resep") {
                             if (v!.isEmpty) return "Nomor resep wajib diisi";
-                            if (v.length < 6) {
+                            if (v.length < 6)
                               return "Nomor resep minimal 6 karakter";
-                            }
+                            if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d)').hasMatch(v))
+                              return "Harus kombinasi huruf & angka";
                           }
                           return null;
                         },
@@ -263,12 +270,12 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           OutlinedButton.icon(
-                            onPressed: () => _pilihGambar(true),
+                            onPressed: () => pilihGambar(dariKamera: true),
                             icon: const Icon(Icons.camera_alt),
                             label: const Text("Kamera"),
                           ),
                           OutlinedButton.icon(
-                            onPressed: () => _pilihGambar(false),
+                            onPressed: () => pilihGambar(dariKamera: false),
                             icon: const Icon(Icons.image),
                             label: const Text("Galeri"),
                           ),
