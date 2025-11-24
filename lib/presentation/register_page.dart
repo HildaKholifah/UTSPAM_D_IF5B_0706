@@ -28,6 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(18.0),
@@ -72,7 +73,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   keyboardType: TextInputType.name,
                   decoration: InputDecoration(
                     label: Text("Nama Lengkap"),
-                    hintText: "Masukkan nama anda",
+                    hintText: "Masukkan Nama Anda",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.blue, width: 2),
+                    ),
                   ),
                 ),
 
@@ -95,7 +103,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   decoration: InputDecoration(
                     label: Text("Email"),
-                    hintText: "Masukkan email",
+                    hintText: "Masukkan Email",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.blue, width: 2),
+                    ),
                   ),
                 ),
 
@@ -118,7 +133,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   decoration: InputDecoration(
                     label: Text("No. Telepon"),
-                    hintText: "Masukkan no. telepon anda",
+                    hintText: "Masukkan Nomor Anda",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.blue, width: 2),
+                    ),
                   ),
                 ),
 
@@ -140,7 +162,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   keyboardType: TextInputType.name,
                   decoration: InputDecoration(
                     label: Text("Alamat"),
-                    hintText: "Masukkan alamat anda",
+                    hintText: "Masukkan Alamat Anda",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.blue, width: 2),
+                    ),
                   ),
                 ),
 
@@ -189,7 +218,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   keyboardType: TextInputType.name,
                   decoration: InputDecoration(
                     label: Text("Username"),
-                    hintText: "Masukkan Username anda",
+                    hintText: "Masukkan Username Anda",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.blue, width: 2),
+                    ),
                   ),
                 ),
 
@@ -213,7 +249,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   keyboardType: TextInputType.name,
                   decoration: InputDecoration(
                     label: Text("Password"),
-                    hintText: "Masukkan password",
+                    hintText: "Masukkan Password",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.blue, width: 2),
+                    ),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _isObscure1 ? Icons.visibility_off : Icons.visibility,
@@ -248,7 +291,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   keyboardType: TextInputType.name,
                   decoration: InputDecoration(
                     label: Text("Confirm Password"),
-                    hintText: "Masukkan password",
+                    hintText: "Masukkan Confirm Password",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.blue, width: 2),
+                    ),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _isObscure2 ? Icons.visibility_off : Icons.visibility,
@@ -282,7 +332,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text("Register berhasil. Silahkan login!"),
+                            content: Text(
+                              "Register berhasil. Silahkan login!",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor: Color.fromARGB(255, 75, 217, 129),
                           ),
                         );
                         Navigator.pushReplacement(
@@ -292,14 +346,20 @@ class _RegisterPageState extends State<RegisterPage> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.lightBlue,
+                      backgroundColor: Colors.blueAccent,
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      elevation: 4,
+                      elevation: 5,
                     ),
-                    child: Text("DAFTAR"),
+                    child: Text(
+                      "DAFTAR",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
 

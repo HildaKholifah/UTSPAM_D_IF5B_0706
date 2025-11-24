@@ -11,7 +11,7 @@ class UserDao {
 
   Future<User?> getUserByEmail(String email) async {
     final db = await dbHelper.database;
-    var res = await db.query('user', where: 'email = ?', whereArgs: [email]);
+    final res = await db.query('user', where: 'email = ?', whereArgs: [email]);
     if (res.isNotEmpty) return User.fromMap(res.first);
     return null;
   }

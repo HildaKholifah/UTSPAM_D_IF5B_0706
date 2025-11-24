@@ -95,6 +95,13 @@ class _LoginPageState extends State<LoginPage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                            ),
+                          ),
                         ),
                       ),
 
@@ -134,6 +141,13 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                            ),
                           ),
                         ),
                       ),
@@ -200,7 +214,13 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             elevation: 4,
                           ),
-                          child: Text("SUBMIT"),
+                          child: Text(
+                            "SUBMIT",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ),
 
