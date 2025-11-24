@@ -1,16 +1,13 @@
-# projectuts
+# Project UTS
 
-A new Flutter project.
+Pembuatan sistem pembelian obat yang saya beri nama MediKlik (Medical Klik).
 
-## Getting Started
+Video running: [https://youtu.be/n_Dl_ud1myw?si=4Bvv7sS-FDhXpYjm](url)
 
-This project is a starting point for a Flutter application.
+## Dibuat Oleh
 
-A few resources to get you started if this is your first Flutter project:
+Nama  : Rahmadani Hilda Kholifah
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Kelas  : IF-5b
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+NIM  : 3012310706
