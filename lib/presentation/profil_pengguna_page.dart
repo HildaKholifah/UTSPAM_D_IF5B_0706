@@ -33,7 +33,7 @@ class _ProfilPenggunaPageState extends State<ProfilPenggunaPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Profil Pengguna"),
-        backgroundColor: Colors.teal,
+        backgroundColor: Color.fromARGB(255, 61, 180, 223)
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator()) // UPDATE: loading

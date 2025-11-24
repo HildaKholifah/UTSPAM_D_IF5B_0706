@@ -92,17 +92,19 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
     }
 
     Pembelian pembelian = Pembelian(
-      nama: widget.nama,
+      namaObat: widget.nama, //error
       kategori: widget.kategori,
       namaPembeli: widget.username,
       jumlah: int.parse(_jumlahCtr.text),
+      catatan: _catatanCtr.text,
       harga: widget.harga,
       total: totalHarga,
       tanggal: DateTime.now().toString().substring(0, 10),
       metode: metodePembelian == "resep" ? "Resep Dokter" : "Langsung",
       nomorResep: metodePembelian == "resep" ? _nomorResepCtr.text : null,
-      gambarResep: fotoResep?.path, 
+      gambarResep: fotoResep?.path,
       gambarObat: _getGambarDummy(widget.nama),
+      status: "Selesai",
     );
 
     await AppRepository().tambahPembelian(pembelian);
@@ -142,7 +144,7 @@ class _FormPembelianPageState extends State<FormPembelianPage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF3DB4DF),
         title: Text("Pembelian Obat - ${widget.nama}"),
-        centerTitle: true,
+        // centerTitle: true,
       ),
 
       body: SingleChildScrollView(

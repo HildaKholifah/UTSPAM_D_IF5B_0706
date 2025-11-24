@@ -34,7 +34,7 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
       text: widget.transaksi.jumlah.toString(),
     );
     _catatanCtr = TextEditingController(text: widget.transaksi.catatan ?? '');
-    
+
     _nomorResepCtr = TextEditingController(
       text: widget.transaksi.nomorResep ?? '',
     );
@@ -80,10 +80,13 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
       return;
     }
 
-    String metodeDisplay = metodePembelian == "resep" ? "Resep Dokter" : "Langsung";
+    String metodeDisplay = metodePembelian == "resep"
+        ? "Resep Dokter"
+        : "Langsung";
 
     final updatedTransaksi = Pembelian(
-      nama: widget.transaksi.nama,
+      id: widget.transaksi.id,
+      namaObat: widget.transaksi.namaObat,
       kategori: widget.transaksi.kategori,
       namaPembeli: widget.transaksi.namaPembeli,
       jumlah: int.parse(_jumlahCtr.text),
@@ -95,6 +98,7 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
       gambarResep: gambarResep?.path ?? widget.transaksi.gambarResep,
       gambarObat: widget.transaksi.gambarObat,
       tanggal: widget.transaksi.tanggal,
+      status: widget.transaksi.status,
     );
 
     widget.onUpdate(updatedTransaksi);
@@ -130,7 +134,7 @@ class _EditTransaksiPageState extends State<EditTransaksiPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Nama Obat: ${widget.transaksi.nama}",
+                "Nama Obat: ${widget.transaksi.namaObat}",
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

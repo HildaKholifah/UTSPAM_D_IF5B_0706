@@ -23,6 +23,7 @@ class PembelianDao {
       DBHelper.tabelPembelian,
       pembelian.toMap(),
       where: "id = ?",
+      whereArgs: [pembelian.id],
     );
   }
 

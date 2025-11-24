@@ -31,6 +31,7 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               "Halo, $username!",
@@ -88,7 +89,7 @@ class HomePage extends StatelessWidget {
                   title: "Profil",
                   color: Color(0xFF7EC8E3),
                   onTap: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>

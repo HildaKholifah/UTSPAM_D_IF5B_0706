@@ -26,7 +26,7 @@ class DetailPembelianPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Detail Pembelian"),
-        backgroundColor: Colors.teal,
+        backgroundColor: Color.fromARGB(255, 61, 180, 223),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -54,10 +54,18 @@ class DetailPembelianPage extends StatelessWidget {
 
                 const SizedBox(height: 16),
 
-                _infoRow("Nama Obat", transaksi.nama),
+                _infoRow("Nama Obat", transaksi.namaObat),
                 _infoRow("Kategori", transaksi.kategori),
                 _infoRow("Nama Pembeli", transaksi.namaPembeli ?? "—"),
                 _infoRow("Jumlah", "${transaksi.jumlah}"),
+                if (transaksi.catatan != null &&
+                    transaksi.catatan!.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    "Catatan: ${transaksi.catatan}",
+                    style: const TextStyle(fontSize: 14, color: Colors.black87),
+                  ),
+                ],
                 _infoRow("Harga Satuan", "Rp${transaksi.harga}"),
                 _infoRow("Total Harga", "Rp${transaksi.total}"),
                 _infoRow("Tanggal", transaksi.tanggal),
@@ -91,6 +99,8 @@ class DetailPembelianPage extends StatelessWidget {
                     "Nomor Resep",
                     transaksi.nomorResep?.toString() ?? "-",
                   ),
+
+                _infoRow("Status", transaksi.status),
 
                 const SizedBox(height: 20),
                 const Divider(),

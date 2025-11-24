@@ -39,7 +39,7 @@ class PembelianObatPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFF3DB4DF),
         title: const Text("Daftar Obat"),
-        centerTitle: true,
+        // centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),

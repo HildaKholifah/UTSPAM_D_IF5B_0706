@@ -1,5 +1,6 @@
 class Pembelian {
-  String nama;
+  int? id;
+  String namaObat;
   String kategori;
   String? namaPembeli;
   int jumlah;
@@ -11,9 +12,11 @@ class Pembelian {
   String? gambarResep;
   String? gambarObat;
   String tanggal;
+  String status;
 
   Pembelian({
-    required this.nama,
+    this.id,
+    required this.namaObat,
     required this.kategori,
     this.namaPembeli,
     required this.jumlah,
@@ -25,11 +28,13 @@ class Pembelian {
     this.gambarResep,
     this.gambarObat,
     required this.tanggal,
+    required this.status,
   });
 
   factory Pembelian.fromMap(Map<String, dynamic> map) {
     return Pembelian(
-      nama: map['nama'] ?? '',
+      id: map['id'],
+      namaObat: map['namaObat'] ?? '',
       kategori: map['kategori'] ?? '',
       namaPembeli: map['namaPembeli'],
       jumlah: map['jumlah'] ?? 0,
@@ -41,12 +46,14 @@ class Pembelian {
       gambarResep: map['gambarResep'] ?? '',
       gambarObat: map['gambarObat'] ?? 'assets/obat/default.png',
       tanggal: map['tanggal'] ?? '',
+      status: map['status'] ?? 'selesai',
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'nama': nama,
+      'id': id,
+      'namaObat': namaObat,
       'kategori': kategori,
       'namaPembeli': namaPembeli,
       'jumlah': jumlah,
@@ -58,11 +65,13 @@ class Pembelian {
       'gambarResep': gambarResep,
       'gambarObat': gambarObat,
       'tanggal': tanggal,
+      'status': status,
     };
   }
 
   Pembelian copyWith({
-    String? nama,
+    int? id,
+    String? namaObat,
     String? kategori,
     String? namaPembeli,
     int? jumlah,
@@ -74,9 +83,11 @@ class Pembelian {
     String? nomorResep,
     String? gambarResep,
     String? tanggal,
+    String? status,
   }) {
     return Pembelian(
-      nama: nama ?? this.nama,
+      id: id ?? this.id,
+      namaObat: namaObat ?? this.namaObat,
       kategori: kategori ?? this.kategori,
       namaPembeli: namaPembeli ?? this.namaPembeli,
       jumlah: jumlah ?? this.jumlah,
@@ -88,6 +99,7 @@ class Pembelian {
       gambarResep: gambarResep ?? this.gambarResep,
       gambarObat: gambarObat ?? this.gambarObat,
       tanggal: tanggal ?? this.tanggal,
+      status: status ?? this.status,
     );
   }
 }

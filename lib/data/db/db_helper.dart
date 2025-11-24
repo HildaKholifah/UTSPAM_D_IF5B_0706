@@ -28,10 +28,10 @@ class DBHelper {
 
   Future<Database> _initDB() async {
     String path = join(await getDatabasesPath(), "mediklik.db");
-    deleteDatabase(path);
+    // deleteDatabase(path);
     return await openDatabase(
       path,
-      version: 2,
+      version: 3,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -54,7 +54,7 @@ class DBHelper {
     await db.execute('''
       CREATE TABLE obat(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nama TEXT NOT NULL,
+        namaObat TEXT NOT NULL,
         kategori TEXT NOT NULL,
         harga INTEGER NOT NULL,
         gambar TEXT
@@ -64,7 +64,7 @@ class DBHelper {
     await db.execute('''
       CREATE TABLE pembelian (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nama TEXT NOT NULL,
+        namaObat TEXT NOT NULL,
         kategori TEXT NOT NULL,
         namaPembeli TEXT,
         jumlah INTEGER NOT NULL,
@@ -75,13 +75,14 @@ class DBHelper {
         nomorResep TEXT,
         gambarResep TEXT,
         gambarObat TEXT,
-        tanggal TEXT NOT NULL
+        tanggal TEXT NOT NULL,
+        status TEXT NOT NULL DEFAULT 'selesai'
       )
     ''');
   }
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    if (oldVersion < 2) {
+    if (oldVersion < 3) {
       await db.execute("ALTER TABLE pembelian ADD COLUMN kategori TEXT;");
       await db.execute("ALTER TABLE pembelian ADD COLUMN namaPembeli TEXT;");
       await db.execute("ALTER TABLE pembelian ADD COLUMN catatan TEXT;");
@@ -90,6 +91,9 @@ class DBHelper {
       await db.execute("ALTER TABLE pembelian ADD COLUMN nomorResep TEXT;");
       await db.execute("ALTER TABLE pembelian ADD COLUMN gambarResep TEXT;");
       await db.execute("ALTER TABLE pembelian ADD COLUMN gambarObat TEXT;");
+      await db.execute(
+        "ALTER TABLE pembelian ADD COLUMN status TEXT DEFAULT 'selesai';",
+      );
     }
   }
 }

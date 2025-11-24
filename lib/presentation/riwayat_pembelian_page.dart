@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:projectuts/data/model/pembelian.dart';
 import 'package:projectuts/data/repository/app_repository.dart';
 import 'package:projectuts/presentation/detail_pembelian_page.dart';
-import 'package:projectuts/presentation/edit_transaksi_page.dart';
+import 'package:projectuts/presentation/edit_pembelian_page.dart';
 import 'package:projectuts/presentation/home_page.dart';
 
 class RiwayatPembelianPage extends StatefulWidget {
-  final Map<String, dynamic>? transaksiBaru;
   final String username;
-
-  RiwayatPembelianPage({Key? key, this.transaksiBaru, required this.username});
+  RiwayatPembelianPage({Key? key, required this.username}) : super(key: key);
 
   @override
   State<RiwayatPembelianPage> createState() => _RiwayatPembelianPageState();
@@ -17,13 +15,14 @@ class RiwayatPembelianPage extends StatefulWidget {
 
 class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
   List<Pembelian> riwayat = [];
+  final AppRepository _repository = AppRepository();
 
   Color _badgeColor(String metode) {
     return metode == "Resep Dokter" ? Color(0xFF7EC8E3) : Color(0xFF98E2C6);
   }
 
   String _metodeText(String metode) {
-    return metode; // tampilkan sesuai field metode langsung
+    return metode; 
   }
 
   @override
@@ -32,24 +31,20 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
     _loadRiwayat();
   }
 
-  // Method untuk mengambil data dari database
   Future<void> _loadRiwayat() async {
-    var dataDariDb = await AppRepository().getRiwayatPembelian(widget.username);
-    setState(() {
-      riwayat = dataDariDb;
-      if (widget.transaksiBaru != null) {
-        riwayat.insert(0, Pembelian.fromMap(widget.transaksiBaru!));
-      }
-    });
+    final data = await _repository.getRiwayatPembelian(widget.username);
+      setState(() {
+        riwayat = data; 
+      });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.teal,
+        backgroundColor: Color.fromARGB(255, 61, 180, 223),
         title: const Text("Riwayat Pembelian"),
-        centerTitle: true,
+        // centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -78,20 +73,21 @@ class _RiwayatPembelianPageState extends State<RiwayatPembelianPage> {
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(4),
                 child: Image.asset(
-                  data.gambarObat ?? 'asset/obat/Kosong.png',
+                  data.gambarObat ?? 'asset/obat/default.png',
                   width: 35,
                   height: 35,
                   fit: BoxFit.cover,
                 ),
               ),
               title: Text(
-                data.nama,
+                data.namaObat,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(data.kategori),
+                  Text("Pembeli: ${data.namaPembeli ?? '-'}"),
                   const SizedBox(height: 6),
                   Row(
                     children: [
