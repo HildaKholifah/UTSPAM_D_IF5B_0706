@@ -58,150 +58,176 @@ class _LoginPageState extends State<LoginPage> {
 
                 SizedBox(height: 40),
 
-                Column(
-                  children: [
-                    TextFormField(
-                      controller: _emailCtr,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Please enter your email";
-                        } else if (!value.contains("@")) {
-                          return "Please enter a valid email address";
-                        } else if (!value.contains("@gmail.com")) {
-                          return "Email harus berakhiran @gmail.com";
-                        }
-                        return null;
-                      },
-                      keyboardType: TextInputType.emailAddress,
-
-                      decoration: InputDecoration(
-                        label: Text("Email"),
-                        hintText: "Masukkan Email",
+                Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 6,
+                        offset: Offset(0, 4),
                       ),
-                    ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: _emailCtr,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Please enter your email";
+                          } else if (!value.contains("@")) {
+                            return "Please enter a valid email address";
+                          } else if (!value.contains("@gmail.com")) {
+                            return "Email harus berakhiran @gmail.com";
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.emailAddress,
 
-                    TextFormField(
-                      controller: _passCtr,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Please enter your password";
-                        }
-                        if (value.length < 8) {
-                          return 'Password must be at least 8 characters long';
-                        }
-                        return null;
-                      },
-
-                      obscureText: isObscure,
-
-                      keyboardType: TextInputType.name,
-                      decoration: InputDecoration(
-                        label: Text("Password"),
-                        hintText: "Masukkan Password",
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            isObscure ? Icons.visibility_off : Icons.visibility,
+                        decoration: InputDecoration(
+                          label: Text("Email"),
+                          hintText: "Masukkan Email",
+                          prefixIcon: Icon(Icons.email_outlined),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          onPressed: () {
-                            setState(() {
-                              isObscure = !isObscure;
-                            });
-                          },
                         ),
                       ),
-                    ),
 
-                    SizedBox(height: 20),
+                      SizedBox(height: 15),
 
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (_globalKey.currentState!.validate()) {
-                            bool success = await _userRepository.login(
-                              email: _emailCtr.text,
-                              password: _passCtr.text,
-                            );
+                      TextFormField(
+                        controller: _passCtr,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Please enter your password";
+                          }
+                          if (value.length < 8) {
+                            return 'Password must be at least 8 characters long';
+                          }
+                          return null;
+                        },
 
-                            if (success) {
-                              String? username = await _userRepository
-                                  .getUsernameByEmail(_emailCtr.text);
-                              if (username != null) {
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        HomePage(username: username),
-                                  ),
-                                  (route) => false,
-                                );
+                        obscureText: isObscure,
+
+                        keyboardType: TextInputType.name,
+                        decoration: InputDecoration(
+                          label: Text("Password"),
+                          hintText: "Masukkan Password",
+                          prefixIcon: Icon(Icons.lock_outline),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              isObscure
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                isObscure = !isObscure;
+                              });
+                            },
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height: 20),
+
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            if (_globalKey.currentState!.validate()) {
+                              bool success = await _userRepository.login(
+                                email: _emailCtr.text,
+                                password: _passCtr.text,
+                              );
+
+                              if (success) {
+                                String? username = await _userRepository
+                                    .getUsernameByEmail(_emailCtr.text);
+                                if (username != null) {
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          HomePage(username: username),
+                                    ),
+                                    (route) => false,
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        "Terjadi Kesalahan, coba lagi.",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                      "Terjadi Kesalahan, coba lagi.",
+                                      "Email atau Password salah!",
                                       style: TextStyle(color: Colors.white),
                                     ),
-                                    backgroundColor: Colors.red,
+                                    backgroundColor: const Color.fromARGB(
+                                      255,
+                                      217,
+                                      85,
+                                      75,
+                                    ),
                                   ),
                                 );
                               }
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    "Email atau Password salah!",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  backgroundColor: const Color.fromARGB(
-                                    255,
-                                    217,
-                                    85,
-                                    75,
-                                  ),
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blueAccent,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            elevation: 4,
+                          ),
+                          child: Text("SUBMIT"),
+                        ),
+                      ),
+
+                      SizedBox(height: 20),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Apakah anda belum punya akun? "),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RegisterPage(),
                                 ),
                               );
-                            }
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueAccent,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            },
+                            child: Text(
+                              "Daftar Disini!",
+                              style: TextStyle(color: Colors.blueAccent),
+                            ),
                           ),
-                          elevation: 4,
-                        ),
-                        child: Text("SUBMIT"),
+                        ],
                       ),
-                    ),
-
-                    SizedBox(height: 20),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Apakah anda belum punya akun? "),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RegisterPage(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            "Daftar Disini!",
-                            style: TextStyle(color: Colors.blueAccent),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
